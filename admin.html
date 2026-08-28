@@ -508,7 +508,7 @@ function renderTable() {
 function openAdd() {
   document.getElementById('formTitle').textContent = 'Agregar mascota';
   document.getElementById('fIdx').value = '';
-  ['fNombre','fTipo','fHistoria','fFoto'].forEach(id=>document.getElementById(id).value='');
+  ['fNombre','fTipo','fHistoria'].forEach(id=>document.getElementById(id).value='');
   fotosSubidas = []; renderFotosPreview();
   document.getElementById('fStatus').value = 'disponible';
   tags = []; renderTags();
@@ -530,8 +530,6 @@ function editDog(idx) {
   document.getElementById('mForm').classList.add('open');
 }
 
-async function saveDog() {
-  
 let fotosSubidas = [];
 
 function abrirCloudinary() {
@@ -582,11 +580,11 @@ function removeFoto(i) {
   renderFotosPreview();
 }
 
+async function saveDog() {
   const data = {
     nombre:   document.getElementById('fNombre').value.trim(),
     tipo:     document.getElementById('fTipo').value.trim(),
     historia: document.getElementById('fHistoria').value.trim(),
-    foto:     document.getElementById('fFoto').value.trim(),
     status:   document.getElementById('fStatus').value,
     tags:     tags.join(','),
     fotos:    fotosSubidas.join('|'),
