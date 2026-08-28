@@ -281,7 +281,7 @@ let delIdxR = null;
 async function loadRescatados() {
   try {
     if (SHEET_ID === 'TU_SHEET_ID_AQUI') throw new Error('demo');
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Rescatados`;
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Rescatados&t=${Date.now()}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('fetch failed');
     const csv = await res.text();
@@ -442,7 +442,7 @@ function doLogout() {
 async function loadDogs() {
   try {
     if (SHEET_ID === 'TU_SHEET_ID_AQUI') throw new Error('demo');
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Mascotas`;
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Mascotas&t=${Date.now()}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('fetch failed');
     const csv = await res.text();
