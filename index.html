@@ -569,9 +569,10 @@ function renderGalleryThumbs(fotos, nombre) {
   if (fotos.length <= 1) return '';
   const shown = fotos.slice(1, 4);
   const extra = fotos.length - 4;
+  const fotosStr = fotos.join('||');
   return `<div class="card-gallery">
-    ${shown.map((f,i) => `<img src="${f}" alt="${nombre}" onclick="openLightbox(${JSON.stringify(fotos)},${i+1})">`).join('')}
-    ${extra > 0 ? `<div class="more-photos" onclick="openLightbox(${JSON.stringify(fotos)},0)">+${extra} más</div>` : ''}
+    ${shown.map((f,i) => `<img src="${f}" alt="${nombre}" onclick="openLightbox(this.closest('.card').querySelector('.card-img').dataset.fotos.split('||'),${i+1})">`).join('')}
+    ${extra > 0 ? `<div class="more-photos" onclick="openLightboxFromCard(this.closest('.card').querySelector('.card-img'))">+${extra} más</div>` : ''}
   </div>`;
 }
 
@@ -583,7 +584,7 @@ function renderGrid(dogs) {
     const isAdopt = d.status==='adoptado', isPend = d.status==='pendiente';
     const gal = getGallery(d);
     return `<div class="card" data-status="${d.status}">
-      <div class="card-img" style="cursor:pointer" onclick="openLightbox(${JSON.stringify(gal.all.length?gal.all:[gal.main])},0)">
+      <div class="card-img" style="cursor:pointer" onclick="openLightboxFromCard(this)" data-fotos="${(gal.all.length?gal.all:[gal.main]).join('||')}">
         <img src="${gal.main}" alt="${d.nombre}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=50'">
         <span class="badge ${statusClass[d.status]}">${statusLabel[d.status]}</span>
         ${gal.all.length > 1 ? `<span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:2px 8px;border-radius:100px">📷 ${gal.all.length} fotos</span>` : ''}
@@ -611,7 +612,7 @@ function renderRescatados(dogs) {
   grid.innerHTML = dogs.map(d => {
     const gal = getGallery(d);
     return `<div class="rescue-card card">
-      <div class="card-img" style="cursor:pointer" onclick="openLightbox(${JSON.stringify(gal.all.length?gal.all:[gal.main])},0)">
+      <div class="card-img" style="cursor:pointer" onclick="openLightboxFromCard(this)" data-fotos="${(gal.all.length?gal.all:[gal.main]).join('||')}">
         <img src="${gal.main}" alt="${d.nombre}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=50'">
         <span class="badge rescue-badge">Rescatado ❤️</span>
         ${gal.all.length > 1 ? `<span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:2px 8px;border-radius:100px">📷 ${gal.all.length} fotos</span>` : ''}
@@ -660,6 +661,12 @@ async function loadDogs() {
 
 // LIGHTBOX
 let lbPhotos = [], lbIndex = 0;
+
+function openLightboxFromCard(el) {
+  const fotos = el.dataset.fotos.split('||').filter(f=>f.trim());
+  openLightbox(fotos, 0);
+}
+
 function openLightbox(photos, idx) {
   lbPhotos = photos; lbIndex = idx;
   document.getElementById('lightbox').classList.add('open');
