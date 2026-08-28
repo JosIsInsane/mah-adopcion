@@ -277,6 +277,7 @@ function handleAgregar() {
 let rescatados = [];
 let fotosSubidasR = [];
 let delIdxR = null;
+let isDemoR = false;
 
 async function loadRescatados() {
   try {
@@ -295,11 +296,10 @@ async function loadRescatados() {
       headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
       return obj;
     }).filter(d=>d.nombre);
+    isDemoR = false;
   } catch {
-    rescatados = [
-      {nombre:'Ejemplo rescatado',tipo:'Macho · 1 año · Mestizo',historia:'Fue encontrado en la calle.',fotos:'https://images.unsplash.com/photo-1558788353-f76d92427f16?w=80&q=60'}
-    ];
-    isDemo = true;
+    rescatados = [];
+    isDemoR = false; // no bloquea el guardado — la pestaña se crea sola al guardar el primero
   }
   renderTableRescatados();
 }
@@ -355,8 +355,10 @@ async function saveRescatado() {
   const idx = document.getElementById('fIdxR').value;
   if (idx !== '') rescatados[idx] = {...rescatados[idx],...data};
   else rescatados.push(data);
-  if (!isDemo) {
-    try { await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({action: idx!==''?'updateRescatado':'addRescatado', idx, ...data})}); } catch {}
+  try {
+    await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({action: idx!==''?'updateRescatado':'addRescatado', idx, ...data})});
+  } catch (err) {
+    console.error('Error guardando rescatado:', err);
   }
   document.getElementById('mRescatado').classList.remove('open');
   renderTableRescatados();
@@ -367,8 +369,10 @@ function askDelR(idx) { delIdxR = idx; document.getElementById('mDelR').classLis
 
 async function confirmDelR() {
   if (delIdxR === null) return;
-  if (!isDemo) {
-    try { await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({action:'deleteRescatado', idx:delIdxR})}); } catch {}
+  try {
+    await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({action:'deleteRescatado', idx:delIdxR})});
+  } catch (err) {
+    console.error('Error eliminando rescatado:', err);
   }
   rescatados.splice(delIdxR, 1);
   delIdxR = null;
