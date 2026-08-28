@@ -180,9 +180,9 @@ tr:hover td{background:var(--g100)}
 // ============================================================
 // CONFIGURACIÓN
 // ============================================================
-const SHEET_ID   = 'TU_SHEET_ID_AQUI';       // ID de tu Google Sheet
+const SHEET_ID = '1CkBU1ks_9GA-xTXRRFNQfayK2dmLjE3QLJlHcppdfi8';       // ID de tu Google Sheet
 const ADMIN_PASS = 'mah2024';                  // Cambia esta contraseña
-const SHEET_URL  = 'TU_APPS_SCRIPT_ADMIN_URL'; // URL del Apps Script admin
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwlNo4vhq-AnRftZ0__oHYxpn2HFYFd1CXNKsAWGR5luSokoN8JG1eqv0LkbVntDG-HQw/exec'; // URL del Apps Script admin
 // ============================================================
 
 const SAMPLE = [
@@ -219,13 +219,29 @@ function doLogout() {
 async function loadDogs() {
   try {
     if (SHEET_ID === 'TU_SHEET_ID_AQUI') throw new Error('demo');
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Mascotas`;
-    const res  = await fetch(url);
-    const text = await res.text();
-    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/)[1]);
-    const rows = json.table.rows;
-    const cols = json.table.cols.map(c => c.label.toLowerCase());
-    dogs = rows.map(r => { const o={}; cols.forEach((c,i)=>o[c]=r.c[i]?.v||''); return o; });
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Mascotas`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed');
+    const csv = await res.text();
+    const lines = csv.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.replace(/"/g,'').toLowerCase().trim());
+    dogs = lines.slice(1)
+      .filter(line => line.trim())
+      .map(line => {
+        const vals = [];
+        let cur = '', inQ = false;
+        for (let ch of line) {
+          if (ch === '"') { inQ = !inQ; }
+          else if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+          else { cur += ch; }
+        }
+        vals.push(cur.trim());
+        const obj = {};
+        headers.forEach((h,i) => obj[h] = (vals[i] || '').replace(/^"|"$/g,'').trim());
+        return obj;
+      })
+      .filter(d => d.nombre);
+    if (!dogs.length) throw new Error('empty');
     isDemo = false;
   } catch {
     dogs = SAMPLE.map(d=>({...d}));
