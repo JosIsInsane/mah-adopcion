@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — M.A.H</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--rust:#C4572A;--rust-d:#8F3C1B;--teal:#1A6B5A;--cream:#FBF7F0;--white:#FFFDF9;--g100:#F5F2EE;--g200:#E8E3DB;--g400:#9C9488;--g700:#4A4540;--g900:#1E1A16}
+body{font-family:'Inter',sans-serif;background:var(--g100);color:var(--g700);min-height:100vh}
+input,select,textarea,button{font-family:'Inter',sans-serif}
+
+#loginScreen{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;background:var(--g900);padding:2rem 1rem 3rem;overflow-y:auto}
+.login-box{background:var(--white);border-radius:16px;padding:2rem;width:100%;max-width:340px;margin-top:auto;margin-bottom:auto}
+.login-box h1{font-size:1.2rem;font-weight:600;color:var(--g900);margin-bottom:.25rem}
+.login-box p{font-size:.82rem;color:var(--g400);margin-bottom:1.5rem}
+.lbl{display:block;font-size:.78rem;font-weight:600;color:var(--g700);margin-bottom:.3rem}
+.inp{width:100%;padding:.6rem .9rem;border:1.5px solid var(--g200);border-radius:8px;font-size:.88rem;margin-bottom:.9rem;outline:none;background:var(--cream);color:var(--g900);transition:.18s}
+.inp:focus{border-color:var(--rust)}
+.err{font-size:.78rem;color:var(--rust);margin-bottom:.75rem;display:none}
+.btn-full{width:100%;padding:.75rem;background:var(--rust);color:#fff;border:none;border-radius:100px;font-size:.95rem;font-weight:600;cursor:pointer}
+.btn-full:hover{background:var(--rust-d)}
+
+#adminScreen{display:none}
+.topbar{background:var(--white);border-bottom:1px solid var(--g200);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-l{font-weight:600;font-size:.95rem;color:var(--g900)}
+.topbar-l span{color:var(--rust)}
+.topbar-r{display:flex;gap:.6rem;align-items:center}
+.topbar-r a{font-size:.8rem;color:var(--g400);text-decoration:none}.topbar-r a:hover{color:var(--g900)}
+.btn-sm{padding:.4rem .9rem;border-radius:100px;font-size:.8rem;font-weight:600;cursor:pointer;border:none;transition:.18s}
+.btn-rust{background:var(--rust);color:#fff}.btn-rust:hover{background:var(--rust-d)}
+.btn-out{background:transparent;border:1.5px solid var(--g200);color:var(--g700)}.btn-out:hover{border-color:var(--g400)}
+.btn-teal{background:var(--teal);color:#fff}.btn-teal:hover{background:#135247}
+.btn-red{background:#fff;color:var(--rust);border:1.5px solid var(--rust)}.btn-red:hover{background:var(--rust);color:#fff}
+
+.main{max-width:1080px;margin:0 auto;padding:1.5rem}
+.notice{background:#EAF3DE;border:1px solid #97C459;border-radius:8px;padding:.75rem 1rem;font-size:.82rem;color:#27500A;margin-bottom:1.25rem}
+.notice a{color:var(--teal);font-weight:600}
+
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.stat-card{background:var(--white);border-radius:10px;border:1px solid var(--g200);padding:.9rem 1.1rem}
+.stat-card .n{font-size:1.5rem;font-weight:600;color:var(--g900);display:block}
+.stat-card .l{font-size:.73rem;color:var(--g400)}
+
+.card-box{background:var(--white);border-radius:12px;border:1px solid var(--g200);overflow:hidden}
+.card-box-hdr{padding:.9rem 1.25rem;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.card-box-hdr h2{font-size:.9rem;font-weight:600;color:var(--g900)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{text-align:left;padding:.6rem 1rem;font-size:.7rem;font-weight:600;color:var(--g400);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--g200);background:var(--g100)}
+td{padding:.7rem 1rem;border-bottom:1px solid var(--g100);color:var(--g700);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--g100)}
+.thumb{width:42px;height:42px;border-radius:7px;object-fit:cover;background:var(--g200)}
+.badge{display:inline-block;padding:2px 9px;border-radius:100px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.b-d{background:#F0DDD4;color:#8F3C1B}.b-p{background:#FDF0D4;color:#7A4D00}.b-a{background:#D4EDE8;color:#1A5047}
+.td-act{display:flex;gap:.4rem}
+.empty{text-align:center;padding:2rem;color:var(--g400);font-size:.84rem}
+
+.overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(20,16,12,.55);align-items:center;justify-content:center;padding:1rem}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:14px;max-width:480px;width:100%;padding:1.5rem;position:relative;max-height:90vh;overflow-y:auto}
+.modal-x{position:absolute;top:.75rem;right:.75rem;background:var(--g100);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.8rem;color:var(--g700);display:flex;align-items:center;justify-content:center}
+.modal-x:hover{background:var(--g200)}
+.modal h2{font-size:1.1rem;font-weight:600;color:var(--g900);margin-bottom:1rem}
+.modal label{display:block;font-size:.78rem;font-weight:600;color:var(--g700);margin-bottom:.3rem}
+.modal input,.modal select,.modal textarea{width:100%;padding:.6rem .9rem;border:1.5px solid var(--g200);border-radius:8px;font-size:.86rem;color:var(--g900);background:var(--cream);margin-bottom:.85rem;outline:none;transition:.18s}
+.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--rust)}
+.modal textarea{resize:vertical;min-height:68px}
+.modal-foot{display:flex;gap:.6rem;justify-content:flex-end;margin-top:.25rem}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.85rem}
+.tag-item{background:var(--g100);color:var(--g700);font-size:.75rem;padding:3px 10px;border-radius:100px;display:flex;align-items:center;gap:.3rem}
+.tag-item button{background:none;border:none;cursor:pointer;color:var(--g400);font-size:.7rem}
+.tag-item button:hover{color:var(--rust)}
+.add-tag{display:flex;gap:.4rem;margin-bottom:.85rem}
+.add-tag input{margin-bottom:0;flex:1}
+.hint{font-size:.75rem;color:var(--g400);margin-top:-.6rem;margin-bottom:.85rem}
+
+.toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--g900);color:#fff;padding:.65rem 1.1rem;border-radius:9px;font-size:.82rem;z-index:999;display:none}
+.toast.show{display:block}
+</style>
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>🐾 M.A.H Admin</h1>
+    <p>Panel de administración de mascotas</p>
+    <label class="lbl">Correo</label>
+    <input class="inp" type="email" id="loginEmail" placeholder="admin@mah.hn" onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="lbl">Contraseña</label>
+    <input class="inp" type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="err" id="loginErr">Contraseña incorrecta.</div>
+    <button class="btn-full" onclick="doLogin()">Ingresar</button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminScreen">
+  <div class="topbar">
+    <div class="topbar-l"><span>🐾</span> M.A.H Admin</div>
+    <div class="topbar-r">
+      <a href="index.html" target="_blank">Ver sitio ↗</a>
+      <button class="btn-sm btn-rust" onclick="openAdd()">+ Agregar</button>
+      <button class="btn-sm btn-out" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="notice" id="sheetNotice" style="display:none">
+      ⚠️ Modo demo — los cambios no se guardan. Para conectar Google Sheets, <a href="#" onclick="alert('Pega el ID de tu Google Sheet en la variable SHEET_ID del archivo admin.html')">configura el Sheet ID</a>.
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><span class="n" id="sTotal">—</span><span class="l">Total</span></div>
+      <div class="stat-card"><span class="n" id="sDisp">—</span><span class="l">Disponibles</span></div>
+      <div class="stat-card"><span class="n" id="sPend">—</span><span class="l">En proceso</span></div>
+      <div class="stat-card"><span class="n" id="sAdop">—</span><span class="l">Adoptadas</span></div>
+    </div>
+    <div class="card-box">
+      <div class="card-box-hdr">
+        <h2>Mascotas registradas</h2>
+        <select id="filterSel" onchange="renderTable()" style="padding:.35rem .7rem;border:1.5px solid var(--g200);border-radius:8px;font-size:.82rem;background:var(--white);color:var(--g700);outline:none">
+          <option value="all">Todos</option>
+          <option value="disponible">Disponibles</option>
+          <option value="pendiente">En proceso</option>
+          <option value="adoptado">Adoptadas</option>
+        </select>
+      </div>
+      <div id="tableWrap"><div class="empty">Cargando...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FORM -->
+<div class="overlay" id="mForm">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <h2 id="formTitle">Agregar mascota</h2>
+    <input type="hidden" id="fIdx">
+    <label>Nombre</label><input type="text" id="fNombre" placeholder="Nombre de la mascota">
+    <label>Descripción</label><input type="text" id="fTipo" placeholder="Hembra · 2 años · Mestiza">
+    <label>Historia</label><textarea id="fHistoria" placeholder="Historia de rescate..."></textarea>
+    <label>Fotos de la mascota</label>
+    <div id="fotosPreview" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem"></div>
+    <button type="button" onclick="abrirCloudinary()" style="width:100%;padding:.65rem;border:1.5px dashed var(--g200);border-radius:8px;background:var(--g100);color:var(--g700);cursor:pointer;font-size:.85rem;font-family:'Inter',sans-serif;margin-bottom:.85rem;transition:.18s" onmouseover="this.style.borderColor='var(--rust)'" onmouseout="this.style.borderColor='var(--g200)'">
+      📷 Subir fotos
+    </button>
+    <div class="hint">Puedes subir varias fotos. La primera será la foto principal.</div>
+    <div class="hint">Sube la foto a Google Drive → clic derecho → "Obtener enlace" → pega la URL aquí.</div>
+    <label>Estado</label>
+    <select id="fStatus">
+      <option value="disponible">Disponible</option>
+      <option value="pendiente">En proceso</option>
+      <option value="adoptado">Adoptado</option>
+    </select>
+    <label>Características</label>
+    <div class="tags-wrap" id="tagsList"></div>
+    <div class="add-tag">
+      <input type="text" id="tagInput" placeholder="Ej: Vacunada" onkeydown="if(event.key==='Enter'){addTag();event.preventDefault()}">
+      <button class="btn-sm btn-out" onclick="addTag()">+ Agregar</button>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-sm btn-out" onclick="closeModal()">Cancelar</button>
+      <button class="btn-sm btn-rust" onclick="saveDog()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div class="overlay" id="mDel">
+  <div class="modal" style="max-width:340px">
+    <h2>¿Eliminar mascota?</h2>
+    <p style="font-size:.84rem;color:var(--g400);margin:.4rem 0 1.25rem">Esta acción no se puede deshacer.</p>
+    <div class="modal-foot">
+      <button class="btn-sm btn-out" onclick="document.getElementById('mDel').classList.remove('open')">Cancelar</button>
+      <button class="btn-sm btn-red" onclick="confirmDel()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIGURACIÓN
+// ============================================================
+const SHEET_ID = '1CkBU1ks_9GA-xTXRRFNQfayK2dmLjE3QLJlHcppdfi8';       // ID de tu Google Sheet
+const ADMIN_PASS = 'mah2024';                  // Cambia esta contraseña
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwlNo4vhq-AnRftZ0__oHYxpn2HFYFd1CXNKsAWGR5luSokoN8JG1eqv0LkbVntDG-HQw/exec'; // URL del Apps Script admin
+// ============================================================
+
+const SAMPLE = [
+  {nombre:"Canela",tipo:"Hembra · 2 años · Mestiza",historia:"Rescatada del mercado de Comayagüela.",tags:"Vacunada,Esterilizada,Con niños ✓",status:"disponible",foto:"https://images.unsplash.com/photo-1558788353-f76d92427f16?w=80&q=60"},
+  {nombre:"Rocky",tipo:"Macho · 4 años · Labrador mix",historia:"Encontrado amarrado afuera de una gasolinera.",tags:"Vacunado,Castrado,Adiestrado",status:"disponible",foto:"https://images.unsplash.com/photo-1605897472359-6e3d25dfb820?w=80&q=60"},
+  {nombre:"Luna",tipo:"Hembra · 1 año · Beagle mix",historia:"En proceso de adopción.",tags:"Vacunada,Esterilizada",status:"pendiente",foto:"https://images.unsplash.com/photo-1534361960057-19f4434a0f74?w=80&q=60"},
+  {nombre:"Coco",tipo:"Macho · 6 meses · Mestizo",historia:"Camada rescatada en Choloma.",tags:"Vacunado,Cachorro",status:"disponible",foto:"https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=80&q=60"},
+  {nombre:"Max",tipo:"Macho · 3 años · Golden mix",historia:"Ya adoptado, feliz con su familia.",tags:"Vacunado,Castrado",status:"adoptado",foto:"https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=80&q=60"},
+];
+
+let dogs = [];
+let tags = [];
+let delIdx = null;
+let isDemo = true;
+
+function doLogin() {
+  const pass = document.getElementById('loginPass').value;
+  document.getElementById('loginErr').style.display = 'none';
+  if (pass === ADMIN_PASS) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    loadDogs();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminScreen').style.display = 'none';
+  document.getElementById('loginPass').value = '';
+}
+
+async function loadDogs() {
+  try {
+    if (SHEET_ID === 'TU_SHEET_ID_AQUI') throw new Error('demo');
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Mascotas`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed');
+    const csv = await res.text();
+    const lines = csv.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.replace(/"/g,'').toLowerCase().trim());
+    dogs = lines.slice(1)
+      .filter(line => line.trim())
+      .map(line => {
+        const vals = [];
+        let cur = '', inQ = false;
+        for (let ch of line) {
+          if (ch === '"') { inQ = !inQ; }
+          else if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+          else { cur += ch; }
+        }
+        vals.push(cur.trim());
+        const obj = {};
+        headers.forEach((h,i) => obj[h] = (vals[i] || '').replace(/^"|"$/g,'').trim());
+        return obj;
+      })
+      .filter(d => d.nombre);
+    if (!dogs.length) throw new Error('empty');
+    isDemo = false;
+  } catch {
+    dogs = SAMPLE.map(d=>({...d}));
+    isDemo = true;
+    document.getElementById('sheetNotice').style.display = 'block';
+  }
+  updateStats(); renderTable();
+}
+
+function updateStats() {
+  document.getElementById('sTotal').textContent = dogs.length;
+  document.getElementById('sDisp').textContent  = dogs.filter(d=>d.status==='disponible').length;
+  document.getElementById('sPend').textContent  = dogs.filter(d=>d.status==='pendiente').length;
+  document.getElementById('sAdop').textContent  = dogs.filter(d=>d.status==='adoptado').length;
+}
+
+function renderTable() {
+  const f = document.getElementById('filterSel').value;
+  const list = f==='all' ? dogs : dogs.filter(d=>d.status===f);
+  const bCls = {disponible:'b-d',pendiente:'b-p',adoptado:'b-a'};
+  const bLbl = {disponible:'Disponible',pendiente:'En proceso',adoptado:'Adoptado'};
+  document.getElementById('tableWrap').innerHTML = list.length ? `
+    <table>
+      <thead><tr><th>Foto</th><th>Nombre</th><th>Descripción</th><th>Estado</th><th>Acciones</th></tr></thead>
+      <tbody>${list.map((d,i)=>{
+        const idx = dogs.indexOf(d);
+        return `<tr>
+          <td><img class="thumb" src="${d.foto||''}" alt="${d.nombre}" onerror="this.style.display='none'"></td>
+          <td style="font-weight:600;color:var(--g900)">${d.nombre}</td>
+          <td style="color:var(--g400)">${d.tipo||'—'}</td>
+          <td><span class="badge ${bCls[d.status]}">${bLbl[d.status]}</span></td>
+          <td><div class="td-act">
+            <button class="btn-sm btn-teal" onclick="editDog(${idx})">Editar</button>
+            <button class="btn-sm btn-red"  onclick="askDel(${idx})">Eliminar</button>
+          </div></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>` : '<div class="empty">No hay mascotas en esta categoría.</div>';
+}
+
+function openAdd() {
+  document.getElementById('formTitle').textContent = 'Agregar mascota';
+  document.getElementById('fIdx').value = '';
+  ['fNombre','fTipo','fHistoria','fFoto'].forEach(id=>document.getElementById(id).value='');
+  fotosSubidas = []; renderFotosPreview();
+  document.getElementById('fStatus').value = 'disponible';
+  tags = []; renderTags();
+  document.getElementById('mForm').classList.add('open');
+}
+
+function editDog(idx) {
+  const d = dogs[idx];
+  document.getElementById('formTitle').textContent = 'Editar mascota';
+  document.getElementById('fIdx').value = idx;
+  document.getElementById('fNombre').value  = d.nombre||'';
+  document.getElementById('fTipo').value    = d.tipo||'';
+  document.getElementById('fHistoria').value= d.historia||'';
+  fotosSubidas = d.fotos ? d.fotos.split('|').filter(f=>f) : (d.foto ? [d.foto] : []);
+  renderFotosPreview();
+  document.getElementById('fStatus').value  = d.status||'disponible';
+  tags = (d.tags||'').split(',').map(t=>t.trim()).filter(Boolean);
+  renderTags();
+  document.getElementById('mForm').classList.add('open');
+}
+
+async function saveDog() {
+  
+let fotosSubidas = [];
+
+function abrirCloudinary() {
+  const widget = cloudinary.createUploadWidget({
+    cloudName: 'mqnoswoy',
+    uploadPreset: 'jkn0bdmw',
+    multiple: true,
+    maxFiles: 10,
+    sources: ['local', 'camera', 'url'],
+    language: 'es',
+    text: {
+      es: {
+        or: 'O',
+        back: 'Atrás',
+        advanced: 'Avanzado',
+        close: 'Cerrar',
+        no_results: 'Sin resultados',
+        search_placeholder: 'Buscar archivos',
+        about_uw: 'Acerca del widget',
+        menu: { files: 'Mis archivos', camera: 'Cámara', url: 'URL' },
+        selection_counter: { file: 'archivo' },
+        actions: { upload: 'Subir', clear_all: 'Limpiar todo', log_out: 'Cerrar sesión' },
+        notifications: { general_error: 'Ocurrió un error', general_prompt: 'Listo', limit_reached: 'Límite alcanzado' },
+        local: { browse: 'Seleccionar fotos', dd_title_single: 'Arrastra una foto aquí', dd_title_multi: 'Arrastra fotos aquí', drop_title_single: 'Suelta el archivo', drop_title_multiple: 'Suelta los archivos' }
+      }
+    }
+  }, (error, result) => {
+    if (!error && result && result.event === 'success') {
+      fotosSubidas.push(result.info.secure_url);
+      renderFotosPreview();
+    }
+  });
+  widget.open();
+}
+
+function renderFotosPreview() {
+  document.getElementById('fotosPreview').innerHTML = fotosSubidas.map((f,i) =>
+    `<div style="position:relative">
+      <img src="${f}" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--g200)">
+      <button onclick="removeFoto(${i})" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--rust);color:#fff;border:none;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center">✕</button>
+      ${i===0?'<span style="position:absolute;bottom:2px;left:2px;background:var(--rust);color:#fff;font-size:.55rem;padding:1px 4px;border-radius:4px">Principal</span>':''}
+    </div>`
+  ).join('');
+}
+
+function removeFoto(i) {
+  fotosSubidas.splice(i,1);
+  renderFotosPreview();
+}
+
+  const data = {
+    nombre:   document.getElementById('fNombre').value.trim(),
+    tipo:     document.getElementById('fTipo').value.trim(),
+    historia: document.getElementById('fHistoria').value.trim(),
+    foto:     document.getElementById('fFoto').value.trim(),
+    status:   document.getElementById('fStatus').value,
+    tags:     tags.join(','),
+    fotos:    fotosSubidas.join('|'),
+    foto:     fotosSubidas[0] || ''
+  };
+  if (!data.nombre) { showToast('El nombre es obligatorio'); return; }
+  const idx = document.getElementById('fIdx').value;
+  if (idx !== '') dogs[idx] = {...dogs[idx],...data};
+  else dogs.push(data);
+
+  if (!isDemo) {
+    try { await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({action: idx!==''?'update':'add', idx, ...data})}); } catch {}
+  }
+  closeModal(); updateStats(); renderTable();
+  showToast(idx !== '' ? 'Mascota actualizada ✓' : 'Mascota agregada ✓');
+}
+
+function askDel(idx) { delIdx = idx; document.getElementById('mDel').classList.add('open'); }
+
+async function confirmDel() {
+  if (delIdx === null) return;
+  if (!isDemo) {
+    try { await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({action:'delete', idx:delIdx})}); } catch {}
+  }
+  dogs.splice(delIdx, 1);
+  delIdx = null;
+  document.getElementById('mDel').classList.remove('open');
+  updateStats(); renderTable();
+  showToast('Mascota eliminada');
+}
+
+function addTag() {
+  const inp = document.getElementById('tagInput');
+  const val = inp.value.trim();
+  if (val && !tags.includes(val)) { tags.push(val); renderTags(); }
+  inp.value = '';
+}
+
+function renderTags() {
+  document.getElementById('tagsList').innerHTML = tags.map((t,i)=>
+    `<span class="tag-item">${t}<button onclick="tags.splice(${i},1);renderTags()">✕</button></span>`
+  ).join('');
+}
+
+function closeModal() { document.getElementById('mForm').classList.remove('open'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{
+  if(e.target===o && o.id!=='mDel') o.classList.remove('open');
+}));
+</script>
+</body>
+</html>

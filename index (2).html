@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mascotas en Adopción Honduras</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#E8780A;--orange-d:#C45F00;--orange-l:#FFF0E0;--orange-ll:#FFF8F0;
+  --dark:#1A1410;--dark2:#2C2218;
+  --cream:#FFFAF5;--white:#FFFFFF;
+  --g100:#F7F3EE;--g200:#EDE6DC;--g400:#A09080;--g700:#4A3C30;--g900:#1A1410;
+}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--g700);line-height:1.6}
+a{text-decoration:none}
+img{max-width:100%}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:99;background:#FFFFFF;border-bottom:2px solid var(--orange-l);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(232,120,10,.1)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo img{height:44px;width:auto}
+.logo-text{display:flex;flex-direction:column;line-height:1.1}
+.logo-text .name{font-weight:700;font-size:.9rem;color:var(--dark)}
+.logo-text .tagline{font-size:.65rem;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.nav-r{display:flex;gap:.75rem;align-items:center}
+.nav-r a{font-size:.85rem;font-weight:500;color:var(--g700);transition:.18s}
+.nav-r a:hover{color:var(--orange)}
+.nav-social{display:flex;gap:.5rem}
+.nav-social a{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:.18s}
+.nav-ig{background:#E1306C;color:#fff}.nav-ig:hover{background:#c0255a}
+.nav-fb{background:#1877F2;color:#fff}.nav-fb:hover{background:#1260cc}
+.btn-nav{padding:.45rem 1.1rem;border-radius:100px;font-size:.82rem;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:.18s;background:var(--orange);color:#fff}
+.btn-nav:hover{background:var(--orange-d)}
+
+/* HERO */
+.hero{background:var(--cream);min-height:82vh;display:flex;align-items:center;padding:3rem 1.5rem;position:relative;overflow:hidden}
+.hero-bg{display:none}
+.hero-overlay{display:none}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;max-width:1080px;margin:0 auto;width:100%}
+.hero-c{color:var(--dark);text-align:left}
+.hero-logo{width:120px;margin-bottom:1.5rem}
+.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem}
+.eyebrow::before{content:'';display:block;width:32px;height:2px;background:var(--orange)}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:600;line-height:1.1;margin-bottom:1rem;color:var(--dark)}
+.hero h1 em{font-style:italic;color:var(--orange)}
+.hero p{color:var(--g400);margin-bottom:1.75rem;font-size:1rem;max-width:420px}
+.hero-btns{display:flex;gap:.75rem;flex-wrap:wrap}
+.hero-btns a{display:inline-flex;align-items:center;gap:.4rem;padding:.8rem 1.75rem;border-radius:100px;font-weight:600;font-size:.9rem;transition:.18s}
+.h-btn1{background:var(--orange);color:#fff}.h-btn1:hover{background:var(--orange-d)}
+.h-btn2{border:1.5px solid var(--g200);color:var(--g700)}.h-btn2:hover{border-color:var(--orange);color:var(--orange)}
+.hero-img-wrap{position:relative;border-radius:24px;overflow:hidden;height:520px}
+.hero-img-wrap img{width:100%;height:100%;object-fit:cover}
+.hero-badge{position:absolute;top:1.25rem;right:1.25rem;background:var(--dark);color:#fff;padding:.4rem 1rem;border-radius:100px;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.stats{display:flex;gap:2rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--g200);flex-wrap:wrap}
+.stat .n{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:600;display:block;color:var(--orange)}
+.stat .l{font-size:.78rem;color:var(--g400)}
+
+/* SECCIONES */
+section{padding:4rem 1.5rem}
+.container{max-width:1080px;margin:0 auto}
+.sec-label{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);display:block;margin-bottom:.6rem}
+.sec-title{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:300;color:var(--g900);margin-bottom:.6rem}
+.sec-sub{color:var(--g400);font-size:.92rem;margin-bottom:2.5rem;max-width:480px}
+.text-center{text-align:center}.text-center .sec-sub{margin-left:auto;margin-right:auto}
+
+/* FILTROS */
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.f-btn{padding:.45rem 1.1rem;border-radius:100px;border:1.5px solid var(--g200);background:var(--white);cursor:pointer;font-size:.82rem;font-weight:500;color:var(--g700);transition:.18s;font-family:'Inter',sans-serif}
+.f-btn:hover{border-color:var(--orange);color:var(--orange)}
+.f-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.card{background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--g200);transition:.2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(232,120,10,.12)}
+.card.hidden{display:none}
+.card-img{height:210px;overflow:hidden;background:var(--g100);position:relative}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.card:hover .card-img img{transform:scale(1.04)}
+.badge{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.b-disp{background:#FFF0E0;color:#C45F00}
+.b-pend{background:#FDF0D4;color:#7A4D00}
+.b-adop{background:#D4EDE8;color:#1A5047}
+.card-body{padding:1.1rem}
+.dog-name{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;color:var(--g900);margin-bottom:.15rem}
+.dog-meta{font-size:.78rem;color:var(--g400);margin-bottom:.6rem}
+.dog-story{font-size:.84rem;line-height:1.6;margin-bottom:.9rem}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem}
+.tag{background:var(--g100);color:var(--g700);font-size:.72rem;padding:2px 9px;border-radius:100px}
+.card-actions{display:flex;gap:.5rem}
+.card-actions button{flex:1;padding:.55rem .75rem;border-radius:100px;font-size:.8rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:.18s}
+.ba{background:var(--orange);color:#fff}.ba:hover{background:var(--orange-d)}
+.ba:disabled{background:var(--g200);color:var(--g400);cursor:not-allowed}
+.bp{background:transparent;color:var(--g700);border:1.5px solid var(--g200)!important}.bp:hover:not(:disabled){border-color:var(--orange)!important;color:var(--orange)}
+.bp:disabled{color:var(--g400);cursor:not-allowed}
+.skeleton{background:var(--g200);border-radius:16px;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* APADRINA */
+.apadrina-sec{background:var(--dark2);color:#fff}
+.apadrina-sec .sec-label{color:#FFB366}
+.apadrina-sec .sec-title{color:#fff}
+.apadrina-sec .sec-sub{color:rgba(255,255,255,.55)}
+.tiers{display:flex;flex-direction:column;gap:.75rem;max-width:480px}
+.tier{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:.18s}
+.tier:hover,.tier.sel{border-color:var(--orange);background:rgba(232,120,10,.1)}
+.tier-n{font-weight:600;font-size:.95rem;margin-bottom:.15rem}
+.tier-d{font-size:.78rem;color:rgba(255,255,255,.5)}
+.tier-p{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;color:var(--orange)}
+.tier-pm{font-size:.68rem;color:rgba(255,255,255,.45)}
+.btn-orange{margin-top:1.25rem;display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.75rem;background:var(--orange);color:#fff;border:none;border-radius:100px;font-size:.9rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:.18s}
+.btn-orange:hover{background:var(--orange-d)}
+.apadrina-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.apadrina-img{border-radius:16px;overflow:hidden;height:400px}
+.apadrina-img img{width:100%;height:100%;object-fit:cover}
+
+/* DONACIONES */
+.donar-sec{background:var(--orange-ll)}
+.trencito{text-align:center;margin-bottom:2rem}
+.trencito img{max-width:600px;width:100%;border-radius:16px}
+.cuentas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.cuenta-card{background:var(--white);border-radius:12px;padding:1.1rem 1.25rem;border:1px solid var(--g200);display:flex;align-items:center;gap:.9rem}
+.cuenta-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;text-align:center;line-height:1.2}
+.cuenta-info .banco{font-weight:600;font-size:.88rem;color:var(--g900);margin-bottom:.1rem}
+.cuenta-info .num{font-size:.82rem;color:var(--orange);font-weight:600;font-family:monospace}
+.cuenta-info .nombre{font-size:.72rem;color:var(--g400)}
+.nota-donar{margin-top:1.5rem;background:var(--orange);color:#fff;border-radius:12px;padding:1rem 1.25rem;font-size:.84rem;text-align:center}
+
+/* PROCESO */
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem}
+.step-n{width:36px;height:36px;background:var(--orange-l);color:var(--orange-d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.88rem;margin-bottom:.6rem}
+.step-t{font-weight:600;color:var(--g900);font-size:.95rem;margin-bottom:.3rem}
+.step-d{font-size:.84rem;color:var(--g400);line-height:1.6}
+
+/* REDES */
+.redes-sec{background:var(--dark2);color:#fff;text-align:center}
+.redes-sec .sec-title{color:#fff}
+.redes-sec .sec-sub{color:rgba(255,255,255,.55);margin-left:auto;margin-right:auto}
+.social-cards{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1rem}
+.social-card{display:flex;align-items:center;gap:.75rem;padding:1rem 1.5rem;border-radius:12px;font-weight:600;font-size:.9rem;transition:.18s;min-width:200px}
+.sc-ig{background:#E1306C;color:#fff}.sc-ig:hover{background:#c0255a;transform:translateY(-2px)}
+.sc-fb{background:#1877F2;color:#fff}.sc-fb:hover{background:#1260cc;transform:translateY(-2px)}
+.social-card i{font-size:1.4rem}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(20,16,12,.65);align-items:center;justify-content:center;padding:1rem}
+.overlay.open{display:flex}
+.modal{background:var(--white);border-radius:18px;max-width:480px;width:100%;padding:1.75rem;position:relative;max-height:90vh;overflow-y:auto}
+.modal-x{position:absolute;top:.9rem;right:.9rem;background:var(--g100);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.9rem;color:var(--g700);display:flex;align-items:center;justify-content:center}
+.modal-x:hover{background:var(--g200)}
+.modal h2{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600;color:var(--g900);margin-bottom:.3rem}
+.modal .sub{font-size:.84rem;color:var(--g400);margin-bottom:1.25rem}
+.modal label{display:block;font-size:.78rem;font-weight:600;color:var(--g700);margin-bottom:.3rem}
+.modal input,.modal select,.modal textarea{width:100%;padding:.6rem .9rem;border:1.5px solid var(--g200);border-radius:8px;font-family:'Inter',sans-serif;font-size:.88rem;color:var(--g900);background:var(--cream);margin-bottom:.9rem;outline:none;transition:.18s}
+.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--orange)}
+.modal textarea{resize:vertical;min-height:72px}
+.modal-btn{width:100%;padding:.8rem;background:var(--orange);color:#fff;border:none;border-radius:100px;font-size:.95rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:.18s}
+.modal-btn:hover{background:var(--orange-d)}
+.success{display:none;text-align:center;padding:1.5rem 1rem}
+.success .ico{font-size:2.5rem;margin-bottom:.5rem}
+.success h3{font-family:'Fraunces',serif;font-size:1.3rem;color:var(--g900);margin-bottom:.4rem}
+.success p{font-size:.84rem;color:var(--g400)}
+
+/* FOOTER */
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);align-items:center;justify-content:center;flex-direction:column}
+.lightbox.open{display:flex}
+.lightbox-img{max-width:90vw;max-height:75vh;border-radius:12px;object-fit:contain}
+.lightbox-controls{display:flex;gap:1rem;margin-top:1rem;align-items:center}
+.lb-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:.18s}
+.lb-btn:hover{background:rgba(255,255,255,.3)}
+.lb-close{position:absolute;top:1.25rem;right:1.25rem;background:rgba(255,255,255,.15);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.lb-counter{color:rgba(255,255,255,.7);font-size:.82rem;min-width:60px;text-align:center}
+.lb-thumbs{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;justify-content:center;max-width:90vw}
+.lb-thumb{width:52px;height:52px;border-radius:6px;object-fit:cover;cursor:pointer;opacity:.55;transition:.18s;border:2px solid transparent}
+.lb-thumb:hover{opacity:1}
+.lb-thumb.active{opacity:1;border-color:var(--orange)}
+
+/* GALERÍA EN CARD */
+.card-gallery{display:flex;gap:.35rem;margin-bottom:.75rem;overflow:hidden;border-radius:8px}
+.card-gallery img{width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;transition:.18s;flex-shrink:0}
+.card-gallery img:hover{transform:scale(1.05)}
+.card-gallery .more-photos{width:60px;height:60px;background:var(--orange-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;color:var(--orange);cursor:pointer;flex-shrink:0}
+
+/* RESCATADOS */
+.rescatados-sec{background:var(--g100)}
+.rescue-card{background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--g200);transition:.2s}
+.rescue-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(232,120,10,.12)}
+.rescue-badge{position:absolute;top:10px;left:10px;background:var(--teal, #1A6B5A);color:#fff;padding:3px 10px;border-radius:100px;font-size:.68rem;font-weight:700;text-transform:uppercase}
+
+footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:space-between;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:1.5rem}
+.footer-brand img{height:60px;margin-bottom:.75rem}
+.footer-brand p{font-size:.82rem;max-width:240px;line-height:1.7}
+.footer-col h4{font-size:.78rem;font-weight:600;color:#fff;margin-bottom:.9rem;letter-spacing:.05em;text-transform:uppercase}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.footer-col a{color:rgba(255,255,255,.5);font-size:.84rem;transition:.18s}.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1080px;margin:0 auto;font-size:.78rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:768px){
+  .nav-r .nav-links{display:none}
+  .apadrina-inner{grid-template-columns:1fr}
+  .apadrina-img{height:240px}
+  .hero-inner{grid-template-columns:1fr}
+  .hero-img-wrap{height:280px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="https://i.ibb.co/tThJ4S7t/logo.png" alt="MAH Logo">
+    <div class="logo-text">
+      <span class="name">Mascotas en Adopción</span>
+      <span class="tagline">Honduras · Rescatando y Rehabilitando</span>
+    </div>
+  </div>
+  <div class="nav-r">
+    <a href="#perros" class="nav-links">Adoptar</a>
+    <a href="#apadrina" class="nav-links">Apadrinar</a>
+    <a href="#donar" class="nav-links">Donar</a>
+    <a href="#rescatados" class="nav-links">Rescatados</a>
+    <div class="nav-social">
+      <a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank" class="nav-ig"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank" class="nav-fb"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://wa.me/50494676862" target="_blank" style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;background:#25D366;color:#fff;transition:.18s"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <button class="btn-nav" onclick="openM('adoptar','')">Adoptar ahora</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-c">
+      <img src="https://i.ibb.co/tThJ4S7t/logo.png" alt="MAH Logo" class="hero-logo">
+      <span class="eyebrow">Fundación sin fines de lucro · Desde 2015</span>
+      <h1>No compres uno de raza, <em>adopta</em> uno sin casa.</h1>
+      <p>Rescatamos fauna urbana en estado de abandono y maltrato en Honduras. Más de una década luchando por el bienestar animal.</p>
+      <div class="hero-btns">
+        <a href="#perros" class="h-btn1">🐾 Ver mascotas disponibles</a>
+        <a href="#apadrina" class="h-btn2">💚 Apadrinar</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="n" id="statAdopt">—</span><span class="l">Adoptados</span></div>
+        <div class="stat"><span class="n" id="statDisp">—</span><span class="l">Disponibles</span></div>
+        <div class="stat"><span class="n">95</span><span class="l">Padrinos activos</span></div>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <img src="https://i.ibb.co/wrrjHzNK/perrito1.jpg" alt="Mascota">
+      <span class="hero-badge">Activo desde 2015</span>
+    </div>
+  </div>
+</div>
+
+<!-- PERROS -->
+<section id="perros">
+  <div class="container">
+    <span class="sec-label">Adopción</span>
+    <h2 class="sec-title">Conoce a nuestras mascotas</h2>
+    <p class="sec-sub">Cada una tiene una historia única. Filtra por estado para encontrar a tu compañero ideal.</p>
+    <div class="filters">
+      <button class="f-btn active" onclick="filter('all',this)">Todos</button>
+      <button class="f-btn" onclick="filter('disponible',this)">Disponibles</button>
+      <button class="f-btn" onclick="filter('pendiente',this)">En proceso</button>
+      <button class="f-btn" onclick="filter('adoptado',this)">Adoptados</button>
+    </div>
+    <div id="grid" class="grid"></div>
+  </div>
+</section>
+
+<!-- APADRINA -->
+<section id="apadrina" class="apadrina-sec">
+  <div class="container">
+    <div class="apadrina-inner">
+      <div>
+        <span class="sec-label">Apadrinamiento</span>
+        <h2 class="sec-title">No puedes adoptar, pero sí puedes apadrinar</h2>
+        <p class="sec-sub">Tu aporte mensual cubre alimentación, vacunas y atención veterinaria. Recibe fotos y actualizaciones de tu ahijado.</p>
+        <div class="tiers">
+          <div class="tier sel" onclick="selTier(this)">
+            <div><div class="tier-n">🐾 Padrino Amigo</div><div class="tier-d">Cubre alimentación mensual</div></div>
+            <div style="text-align:right"><div class="tier-p">L.50</div><div class="tier-pm">/mes</div></div>
+          </div>
+          <div class="tier" onclick="selTier(this)">
+            <div><div class="tier-n">🛡️ Padrino Guardián</div><div class="tier-d">Alimentación + vacunas anuales</div></div>
+            <div style="text-align:right"><div class="tier-p">L.100</div><div class="tier-pm">/mes</div></div>
+          </div>
+          <div class="tier" onclick="selTier(this)">
+            <div><div class="tier-n">👼 Padrino Ángel</div><div class="tier-d">Cobertura veterinaria completa</div></div>
+            <div style="text-align:right"><div class="tier-p">L.150</div><div class="tier-pm">/mes</div></div>
+          </div>
+        </div>
+        <button class="btn-orange" onclick="openM('apadrinar','')">💚 Empezar a apadrinar</button>
+      </div>
+      <div class="apadrina-img">
+        <img src="https://i.ibb.co/XZHQQB2z/perrito2.jpg" alt="Mascota en el refugio">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONAR -->
+<section id="donar" class="donar-sec">
+  <div class="container">
+    <div class="text-center">
+      <span class="sec-label">Donaciones</span>
+      <h2 class="sec-title">El trencito de las donaciones 🚂</h2>
+      <p class="sec-sub">Tu donación ayuda a cubrir alimentos, medicamentos y cirugías de emergencia para nuestras mascotas.</p>
+    </div>
+    <div class="trencito">
+      <img src="https://i.ibb.co/bMc2R6sT/Whats-App-Image-2026-08-27-at-3-36-50-PM.jpg" alt="Trencito de donaciones">
+    </div>
+    <div class="cuentas-grid">
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#003DA5;color:#fff">Atlán<br>tida</div>
+        <div class="cuenta-info">
+          <div class="banco">Banco Atlántida</div>
+          <div class="num">2020288345</div>
+          <div class="nombre">Fundación Mascotas en Adopción Honduras</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#CC0000;color:#fff">BAC</div>
+        <div class="cuenta-info">
+          <div class="banco">BAC Credomatic</div>
+          <div class="num">728 551 301</div>
+          <div class="nombre">Celea D. Rodriguez Lopez</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#006B3C;color:#fff">Ban<br>país</div>
+        <div class="cuenta-info">
+          <div class="banco">Banpaís</div>
+          <div class="num">210090097432</div>
+          <div class="nombre">Sarah Isabel Hedman Delgallo</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#007A4D;color:#fff">Bco<br>Occ</div>
+        <div class="cuenta-info">
+          <div class="banco">Banco de Occidente</div>
+          <div class="num">212140880794</div>
+          <div class="nombre">Celea D. Rodriguez Lopez</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#E8780A;color:#fff">Fico<br>hsa</div>
+        <div class="cuenta-info">
+          <div class="banco">Ficohsa</div>
+          <div class="num">200010487268</div>
+          <div class="nombre">Sarah Isabel Hedman Delgallo</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#00A9E0;color:#fff">Tigo<br>💙</div>
+        <div class="cuenta-info">
+          <div class="banco">Tigo Money</div>
+          <div class="num">9717-0267</div>
+          <div class="nombre">Fredy Rodriguez</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#8B2FC9;color:#fff">Ten<br>go</div>
+        <div class="cuenta-info">
+          <div class="banco">Tengo</div>
+          <div class="num">3372-4024</div>
+          <div class="nombre">Sarah Isabel Hedman Delgallo</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#003087;color:#fff">Pay<br>Pal</div>
+        <div class="cuenta-info">
+          <div class="banco">PayPal</div>
+          <div class="num">@mascotasenadopcion</div>
+          <div class="nombre">PayPal.me</div>
+        </div>
+      </div>
+      <div class="cuenta-card">
+        <div class="cuenta-icon" style="background:#6C1CD1;color:#fff">Zel<br>le</div>
+        <div class="cuenta-info">
+          <div class="banco">Zelle</div>
+          <div class="num">carlosgarciahn1</div>
+          <div class="nombre">carlosgarciahn1@gmail.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="nota-donar">
+      📌 <strong>Nota:</strong> Todas son cuentas de ahorro. Para un mejor control, envía tu comprobante a nuestro inbox en redes sociales.
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <div class="container">
+    <span class="sec-label">Cómo funciona</span>
+    <h2 class="sec-title">El proceso de adopción</h2>
+    <p class="sec-sub">Simple, transparente y con seguimiento post-adopción.</p>
+    <div class="steps">
+      <div><div class="step-n">1</div><div class="step-t">Elige tu mascota</div><div class="step-d">Navega los perfiles y encuentra la que conecte con tu familia.</div></div>
+      <div><div class="step-n">2</div><div class="step-t">Llena la solicitud</div><div class="step-d">Formulario rápido con info sobre tu hogar y rutinas.</div></div>
+      <div><div class="step-n">3</div><div class="step-t">Entrevista y visita</div><div class="step-d">Nuestro equipo te contacta para conocer a la mascota.</div></div>
+      <div><div class="step-n">4</div><div class="step-t">¡Bienvenido a casa!</div><div class="step-d">Firmas el contrato y llevas a tu nuevo compañero a casa.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REDES SOCIALES -->
+<section class="redes-sec">
+  <div class="container">
+    <span class="sec-label">Síguenos</span>
+    <h2 class="sec-title">Encuéntranos en redes</h2>
+    <p class="sec-sub">Fotos, historias de rescate, noticias y más. ¡Síguenos y comparte!</p>
+    <div class="social-cards">
+      <a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank" class="social-card sc-ig">
+        <i class="fab fa-instagram"></i>
+        <div>
+          <div style="font-size:.75rem;opacity:.85">Instagram</div>
+          <div>@mascotasenadopcionhnd</div>
+        </div>
+      </a>
+      <a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank" class="social-card sc-fb">
+        <i class="fab fa-facebook-f"></i>
+        <div>
+          <div style="font-size:.75rem;opacity:.85">Facebook</div>
+          <div>Mascotas en Adopción HN</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<!-- RESCATADOS -->
+<section class="rescatados-sec" id="rescatados">
+  <div class="container">
+    <span class="sec-label">Historias de éxito</span>
+    <h2 class="sec-title">Nuestros rescatados 🐾</h2>
+    <p class="sec-sub">Estas mascotas fueron rescatadas de situaciones difíciles. Conoce sus historias.</p>
+    <div id="gridRescatados" class="grid"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img class="lightbox-img" id="lbImg" src="" alt="">
+  <div class="lb-controls">
+    <button class="lb-btn" onclick="lbPrev()">‹</button>
+    <span class="lb-counter" id="lbCounter">1 / 1</span>
+    <button class="lb-btn" onclick="lbNext()">›</button>
+  </div>
+  <div class="lb-thumbs" id="lbThumbs"></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="https://i.ibb.co/tThJ4S7t/logo.png" alt="MAH Logo">
+      <p>Fundación sin fines de lucro dedicada al rescate y adopción de mascotas en Honduras.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Adoptar</h4>
+      <ul>
+        <li><a href="#perros">Ver mascotas</a></li>
+        <li><a href="#proceso">Cómo funciona</a></li>
+        <li><a href="#" onclick="openM('adoptar','')">Solicitar adopción</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Apoyar</h4>
+      <ul>
+        <li><a href="#apadrina">Apadrinar</a></li>
+        <li><a href="#donar">Donar</a></li>
+        <li><a href="#" onclick="openM('apadrinar','')">Ser padrino</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Redes sociales</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+        <li><a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+        <li><a href="https://wa.me/50494676862" target="_blank"><i class="fab fa-whatsapp"></i> 9467-6862</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2015 – 2026 Mascotas en Adopción Honduras</span>
+    <span>Rescatando y Rehabilitando 🐾</span>
+  </div>
+</footer>
+
+<!-- MODAL ADOPTAR -->
+<div class="overlay" id="mAdoptar">
+  <div class="modal">
+    <button class="modal-x" onclick="closeM('mAdoptar')">✕</button>
+    <div id="fAdoptar">
+      <h2>Solicitud de adopción</h2>
+      <p class="sub">Te contactamos en menos de 24 horas.</p>
+      <label>Nombre completo</label><input type="text" id="aNombre" placeholder="Tu nombre">
+      <label>Correo electrónico</label><input type="email" id="aCorreo" placeholder="tucorreo@ejemplo.com">
+      <label>Teléfono</label><input type="tel" id="aTel" placeholder="+504 0000-0000">
+      <label>Mascota de interés</label><input type="text" id="aMascota">
+      <label>¿Tienes espacio exterior?</label>
+      <select id="aEspacio"><option>Sí, patio grande</option><option>Sí, patio pequeño</option><option>No, apartamento</option></select>
+      <label>Cuéntanos sobre tu hogar</label>
+      <textarea id="aHogar" placeholder="¿Tiempo en casa? ¿Otros animales? ¿Niños?"></textarea>
+      <button class="modal-btn" id="btnAdoptar" onclick="enviarAdopcion()">Enviar solicitud</button>
+    </div>
+    <div class="success" id="sAdoptar"><div class="ico">🐾</div><h3>¡Solicitud enviada!</h3><p>Te contactamos en 24 horas para coordinar la visita.</p></div>
+  </div>
+</div>
+
+<!-- MODAL APADRINAR -->
+<div class="overlay" id="mApadrinar">
+  <div class="modal">
+    <button class="modal-x" onclick="closeM('mApadrinar')">✕</button>
+    <div id="fApadrinar">
+      <h2>Apadrinar una mascota</h2>
+      <p class="sub">Recibe fotos y actualizaciones de tu ahijado cada semana.</p>
+      <label>Nombre completo</label><input type="text" id="pNombre" placeholder="Tu nombre">
+      <label>Correo electrónico</label><input type="email" id="pCorreo" placeholder="tucorreo@ejemplo.com">
+      <label>Mascota (opcional)</label><input type="text" id="pMascota" placeholder="O dejamos asignación libre">
+      <label>Nivel</label>
+      <select id="pNivel">
+        <option>🐾 Padrino Amigo — L.50/mes</option>
+        <option>🛡️ Padrino Guardián — L.100/mes</option>
+        <option>👼 Padrino Ángel — L.150/mes</option>
+      </select>
+      <label>Método de pago</label>
+      <select><option>Banco Atlántida</option><option>BAC Credomatic</option><option>Banpaís</option><option>Ficohsa</option><option>Tigo Money</option><option>PayPal</option><option>Zelle</option></select>
+      <button class="modal-btn" id="btnApadrinar" onclick="enviarApadrinamiento()">Confirmar</button>
+    </div>
+    <div class="success" id="sApadrinar"><div class="ico">💚</div><h3>¡Gracias, padrino!</h3><p>Te enviamos los datos de pago en menos de 24 horas.</p></div>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = '1CkBU1ks_9GA-xTXRRFNQfayK2dmLjE3QLJlHcppdfi8';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlNo4vhq-AnRftZ0__oHYxpn2HFYFd1CXNKsAWGR5luSokoN8JG1eqv0LkbVntDG-HQw/exec';
+
+const SAMPLE_DOGS = [
+  {nombre:"Canela",tipo:"Hembra · 2 años · Mestiza",historia:"Rescatada del mercado de Comayagüela. Cariñosa y muy juguetona.",tags:"Vacunada,Esterilizada,Con niños ✓",status:"disponible",foto:"https://images.unsplash.com/photo-1558788353-f76d92427f16?w=400&q=70"},
+  {nombre:"Rocky",tipo:"Macho · 4 años · Labrador mix",historia:"Encontrado amarrado afuera de una gasolinera. Noble y tranquilo.",tags:"Vacunado,Castrado,Adiestrado",status:"disponible",foto:"https://images.unsplash.com/photo-1605897472359-6e3d25dfb820?w=400&q=70"},
+  {nombre:"Luna",tipo:"Hembra · 1 año · Beagle mix",historia:"En proceso de adopción con una familia de Tegucigalpa.",tags:"Vacunada,Esterilizada,Energética",status:"pendiente",foto:"https://images.unsplash.com/photo-1534361960057-19f4434a0f74?w=400&q=70"},
+];
+
+let allDogs = [];
+const statusLabel = {disponible:'Disponible',pendiente:'En proceso',adoptado:'Adoptado ✓'};
+const statusClass = {disponible:'b-disp',pendiente:'b-pend',adoptado:'b-adop'};
+
+function getGallery(d) {
+  const fotos = (d.fotos||d.foto||'').split('|').filter(f=>f.trim());
+  if (!fotos.length) return {main:'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=50', all:[]};
+  return {main: fotos[0], all: fotos};
+}
+
+function renderGalleryThumbs(fotos, nombre) {
+  if (fotos.length <= 1) return '';
+  const shown = fotos.slice(1, 4);
+  const extra = fotos.length - 4;
+  return `<div class="card-gallery">
+    ${shown.map((f,i) => `<img src="${f}" alt="${nombre}" onclick="openLightbox(${JSON.stringify(fotos)},${i+1})">`).join('')}
+    ${extra > 0 ? `<div class="more-photos" onclick="openLightbox(${JSON.stringify(fotos)},0)">+${extra} más</div>` : ''}
+  </div>`;
+}
+
+function renderGrid(dogs) {
+  const grid = document.getElementById('grid');
+  if (!dogs.length) { grid.innerHTML = '<p style="color:var(--g400);font-size:.9rem">No hay mascotas en esta categoría.</p>'; return; }
+  grid.innerHTML = dogs.map(d => {
+    const tags = (d.tags||'').split(',').map(t=>`<span class="tag">${t.trim()}</span>`).join('');
+    const isAdopt = d.status==='adoptado', isPend = d.status==='pendiente';
+    const gal = getGallery(d);
+    return `<div class="card" data-status="${d.status}">
+      <div class="card-img" style="cursor:pointer" onclick="openLightbox(${JSON.stringify(gal.all.length?gal.all:[gal.main])},0)">
+        <img src="${gal.main}" alt="${d.nombre}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=50'">
+        <span class="badge ${statusClass[d.status]}">${statusLabel[d.status]}</span>
+        ${gal.all.length > 1 ? `<span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:2px 8px;border-radius:100px">📷 ${gal.all.length} fotos</span>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="dog-name">${d.nombre}</div>
+        <div class="dog-meta">${d.tipo||''}</div>
+        <div class="dog-story">${d.historia||''}</div>
+        ${renderGalleryThumbs(gal.all, d.nombre)}
+        <div class="tags">${tags}</div>
+        <div class="card-actions">
+          <button class="ba" ${isAdopt||isPend?'disabled':''} onclick="openM('adoptar','${d.nombre}')">
+            ${isAdopt?'Ya adoptado':isPend?'En proceso':'Adoptar'}
+          </button>
+          <button class="bp" ${isAdopt?'disabled':''} onclick="openM('apadrinar','${d.nombre}')">Apadrinar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderRescatados(dogs) {
+  const grid = document.getElementById('gridRescatados');
+  if (!dogs.length) { grid.innerHTML = '<p style="color:var(--g400);font-size:.9rem">Próximamente historias de rescate.</p>'; return; }
+  grid.innerHTML = dogs.map(d => {
+    const gal = getGallery(d);
+    return `<div class="rescue-card card">
+      <div class="card-img" style="cursor:pointer" onclick="openLightbox(${JSON.stringify(gal.all.length?gal.all:[gal.main])},0)">
+        <img src="${gal.main}" alt="${d.nombre}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=50'">
+        <span class="badge rescue-badge">Rescatado ❤️</span>
+        ${gal.all.length > 1 ? `<span style="position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;padding:2px 8px;border-radius:100px">📷 ${gal.all.length} fotos</span>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="dog-name">${d.nombre}</div>
+        <div class="dog-meta">${d.tipo||''}</div>
+        <div class="dog-story">${d.historia||''}</div>
+        ${renderGalleryThumbs(gal.all, d.nombre)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateStats(dogs) {
+  document.getElementById('statAdopt').textContent = dogs.filter(d=>d.status==='adoptado').length;
+  document.getElementById('statDisp').textContent  = dogs.filter(d=>d.status==='disponible').length;
+}
+
+async function loadDogs() {
+  document.getElementById('grid').innerHTML = `
+    <div style="background:var(--g200);height:280px;border-radius:16px" class="skeleton"></div>
+    <div style="background:var(--g200);height:280px;border-radius:16px" class="skeleton"></div>
+    <div style="background:var(--g200);height:280px;border-radius:16px" class="skeleton"></div>`;
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Mascotas`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed');
+    const csv = await res.text();
+    const lines = csv.trim().split('\n');
+    const headers = lines[0].split(',').map(h=>h.replace(/"/g,'').toLowerCase().trim());
+    allDogs = lines.slice(1).filter(l=>l.trim()).map(line=>{
+      const vals=[]; let cur='',inQ=false;
+      for(let ch of line){ if(ch==='"'){inQ=!inQ;}else if(ch===','&&!inQ){vals.push(cur.trim());cur='';}else{cur+=ch;} }
+      vals.push(cur.trim());
+      const obj={};
+      headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+      return obj;
+    }).filter(d=>d.nombre);
+    if(!allDogs.length) throw new Error('empty');
+  } catch { allDogs = SAMPLE_DOGS; }
+  updateStats(allDogs);
+  renderGrid(allDogs);
+}
+
+
+// LIGHTBOX
+let lbPhotos = [], lbIndex = 0;
+function openLightbox(photos, idx) {
+  lbPhotos = photos; lbIndex = idx;
+  document.getElementById('lightbox').classList.add('open');
+  updateLightbox();
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+function updateLightbox() {
+  document.getElementById('lbImg').src = lbPhotos[lbIndex];
+  document.getElementById('lbCounter').textContent = `${lbIndex+1} / ${lbPhotos.length}`;
+  document.getElementById('lbThumbs').innerHTML = lbPhotos.map((f,i) =>
+    `<img class="lb-thumb ${i===lbIndex?'active':''}" src="${f}" onclick="lbGo(${i})">`
+  ).join('');
+}
+function lbNext() { lbIndex = (lbIndex+1) % lbPhotos.length; updateLightbox(); }
+function lbPrev() { lbIndex = (lbIndex-1+lbPhotos.length) % lbPhotos.length; updateLightbox(); }
+function lbGo(i) { lbIndex = i; updateLightbox(); }
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') lbNext();
+  if (e.key === 'ArrowLeft') lbPrev();
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// CARGAR RESCATADOS
+async function loadRescatados() {
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Rescatados`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('no sheet');
+    const csv = await res.text();
+    const lines = csv.trim().split('\n');
+    const headers = lines[0].split(',').map(h=>h.replace(/"/g,'').toLowerCase().trim());
+    const rescatados = lines.slice(1).filter(l=>l.trim()).map(line=>{
+      const vals=[]; let cur='',inQ=false;
+      for(let ch of line){ if(ch==='"'){inQ=!inQ;}else if(ch===','&&!inQ){vals.push(cur.trim());cur='';}else{cur+=ch;} }
+      vals.push(cur.trim());
+      const obj={};
+      headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+      return obj;
+    }).filter(d=>d.nombre);
+    renderRescatados(rescatados);
+  } catch {
+    renderRescatados([]);
+  }
+}
+
+window.filter = function(status,btn) {
+  document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid(status==='all'?allDogs:allDogs.filter(d=>d.status===status));
+};
+
+async function enviar(url,datos,formId,successId,btnId,label) {
+  const btn=document.getElementById(btnId);
+  btn.disabled=true; btn.textContent='Enviando...';
+  try{ await fetch(url,{method:'POST',mode:'no-cors',body:JSON.stringify(datos)}); }catch{}
+  document.getElementById(formId).style.display='none';
+  document.getElementById(successId).style.display='block';
+  setTimeout(()=>{
+    document.getElementById(formId).style.display='block';
+    document.getElementById(successId).style.display='none';
+    btn.disabled=false; btn.textContent=label;
+    document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open'));
+  },3000);
+}
+
+window.enviarAdopcion=function(){
+  enviar(SCRIPT_URL,{action:'adopcion',nombre:document.getElementById('aNombre').value,correo:document.getElementById('aCorreo').value,telefono:document.getElementById('aTel').value,mascota:document.getElementById('aMascota').value,espacio:document.getElementById('aEspacio').value,hogar:document.getElementById('aHogar').value},'fAdoptar','sAdoptar','btnAdoptar','Enviar solicitud');
+};
+window.enviarApadrinamiento=function(){
+  enviar(SCRIPT_URL,{action:'apadrinamiento',nombre:document.getElementById('pNombre').value,correo:document.getElementById('pCorreo').value,mascota:document.getElementById('pMascota').value,nivel:document.getElementById('pNivel').value},'fApadrinar','sApadrinar','btnApadrinar','Confirmar');
+};
+window.openM=function(type,dog=''){
+  if(type==='adoptar'){document.getElementById('aMascota').value=dog;document.getElementById('mAdoptar').classList.add('open');}
+  else if(type==='apadrinar'){document.getElementById('pMascota').value=dog;document.getElementById('mApadrinar').classList.add('open');}
+};
+window.closeM=id=>document.getElementById(id).classList.remove('open');
+window.selTier=el=>{document.querySelectorAll('.tier').forEach(t=>t.classList.remove('sel'));el.classList.add('sel');};
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+loadDogs();
+loadRescatados();
+</script>
+
+<!-- WHATSAPP FLOTANTE -->
+<a href="https://wa.me/50494676862" target="_blank" style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,.4);transition:.2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <i class="fab fa-whatsapp" style="color:#fff;font-size:1.6rem"></i>
+</a>
+
+</body>
+</html>
