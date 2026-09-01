@@ -86,17 +86,26 @@ tr:hover td{background:var(--g100)}
   .main{padding:1rem}
   .stats-row{grid-template-columns:repeat(2,1fr);gap:.5rem}
   .stat-card .n{font-size:1.3rem}
-  table{font-size:.78rem}
-  th,td{padding:.5rem .65rem}
-  .thumb{width:36px;height:36px;border-radius:6px}
-  .td-act{flex-direction:column;gap:.3rem}
-  .td-act button{width:100%}
   .modal{padding:1.25rem;margin:.5rem}
   .modal h2{font-size:1rem}
   .modal-foot{flex-direction:column}
   .modal-foot button{width:100%}
   #loginScreen{padding:1rem}
   .login-box{padding:1.5rem}
+
+  /* Tabla -> tarjetas en móvil */
+  table thead{display:none}
+  table, table tbody, table tr, table td{display:block;width:100%}
+  table{border-collapse:separate}
+  table tr{border:1px solid var(--g200);border-radius:10px;margin-bottom:.75rem;padding:.75rem;background:var(--white)}
+  table td{border:none;padding:.3rem 0;display:flex;align-items:center;gap:.6rem}
+  table td:before{content:attr(data-label);font-size:.68rem;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.03em;min-width:64px;flex-shrink:0}
+  table td:first-child:before{content:''}
+  .thumb{width:44px;height:44px;border-radius:8px}
+  .td-act{flex-direction:row;gap:.5rem;width:100%}
+  .td-act button{width:auto;flex:1}
+  .card-box-hdr{flex-direction:column;align-items:stretch;gap:.6rem}
+  .card-box-hdr select{width:100%}
 }
 </style>
 <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
@@ -168,7 +177,7 @@ tr:hover td{background:var(--g100)}
           <option value="adoptado">Adoptadas</option>
         </select>
       </div>
-      <div id="tableWrap"><div class="empty">Cargando...</div></div>
+      <div id="tableWrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><div class="empty">Cargando...</div></div>
     </div>
 
     <!-- RESCATADOS -->
@@ -177,7 +186,7 @@ tr:hover td{background:var(--g100)}
         <h2>Historias de rescate</h2>
         <button class="btn-sm btn-rust" onclick="openAddRescatado()">+ Agregar rescatado</button>
       </div>
-      <div id="tableRescatados"><div class="empty">Cargando...</div></div>
+      <div id="tableRescatados" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><div class="empty">Cargando...</div></div>
     </div>
   </div>
 </div>
@@ -345,9 +354,9 @@ function renderTableRescatados() {
         const foto = (d.fotos||d.foto||'').split('|')[0];
         return `<tr>
           <td><img class="thumb" src="${foto}" alt="${d.nombre}" onerror="this.style.display='none'"></td>
-          <td style="font-weight:600;color:var(--g900)">${d.nombre}</td>
-          <td style="color:var(--g400)">${d.tipo||'—'}</td>
-          <td><div class="td-act">
+          <td data-label="Nombre" style="font-weight:600;color:var(--g900)">${d.nombre}</td>
+          <td data-label="Descripción" style="color:var(--g400)">${d.tipo||'—'}</td>
+          <td data-label="Acciones"><div class="td-act">
             <button class="btn-sm btn-teal" onclick="editRescatado(${i})">Editar</button>
             <button class="btn-sm btn-red" onclick="askDelR(${i})">Eliminar</button>
           </div></td>
@@ -512,10 +521,10 @@ function renderTable() {
         const idx = dogs.indexOf(d);
         return `<tr>
           <td><img class="thumb" src="${d.foto||''}" alt="${d.nombre}" onerror="this.style.display='none'"></td>
-          <td style="font-weight:600;color:var(--g900)">${d.nombre}</td>
-          <td style="color:var(--g400)">${d.tipo||'—'}</td>
-          <td><span class="badge ${bCls[d.status]}">${bLbl[d.status]}</span></td>
-          <td><div class="td-act">
+          <td data-label="Nombre" style="font-weight:600;color:var(--g900)">${d.nombre}</td>
+          <td data-label="Descripción" style="color:var(--g400)">${d.tipo||'—'}</td>
+          <td data-label="Estado"><span class="badge ${bCls[d.status]}">${bLbl[d.status]}</span></td>
+          <td data-label="Acciones"><div class="td-act">
             <button class="btn-sm btn-teal" onclick="editDog(${idx})">Editar</button>
             <button class="btn-sm btn-red"  onclick="askDel(${idx})">Eliminar</button>
           </div></td>

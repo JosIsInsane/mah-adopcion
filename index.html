@@ -147,6 +147,7 @@ a.cuenta-card:hover .cuenta-link-icon{opacity:1;color:var(--orange)}
 .social-card{display:flex;align-items:center;gap:.75rem;padding:1rem 1.5rem;border-radius:12px;font-weight:600;font-size:.9rem;transition:.18s;min-width:200px}
 .sc-ig{background:#E1306C;color:#fff}.sc-ig:hover{background:#c0255a;transform:translateY(-2px)}
 .sc-fb{background:#1877F2;color:#fff}.sc-fb:hover{background:#1260cc;transform:translateY(-2px)}
+.sc-tk{background:#000;color:#fff}.sc-tk:hover{background:#222;transform:translateY(-2px)}
 .social-card i{font-size:1.4rem}
 
 /* MODAL */
@@ -302,6 +303,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
     <div class="nav-social">
       <a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank" class="nav-ig"><i class="fab fa-instagram"></i></a>
       <a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank" class="nav-fb"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.tiktok.com/@mah_hn3" target="_blank" style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;background:#000;color:#fff;transition:.18s"><i class="fab fa-tiktok"></i></a>
       <a href="https://wa.me/50494676862" target="_blank" style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;background:#25D366;color:#fff;transition:.18s"><i class="fab fa-whatsapp"></i></a>
     </div>
     <button class="btn-nav" onclick="openM('adoptar','')">Adoptar ahora</button>
@@ -321,6 +323,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
     <div style="display:flex;gap:.5rem;padding:.75rem 1rem">
       <a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#E1306C;color:#fff;display:flex;align-items:center;justify-content:center"><i class="fab fa-instagram"></i></a>
       <a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#1877F2;color:#fff;display:flex;align-items:center;justify-content:center"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.tiktok.com/@mah_hn3" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center"><i class="fab fa-tiktok"></i></a>
       <a href="https://wa.me/50494676862" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center"><i class="fab fa-whatsapp"></i></a>
     </div>
     <button onclick="openM('adoptar','');toggleMenu()" style="margin:.25rem 1rem .5rem;padding:.75rem;background:var(--orange);color:#fff;border:none;border-radius:100px;font-size:.9rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer">Adoptar ahora</button>
@@ -367,6 +370,9 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
       <button class="f-btn" onclick="filter('adoptado',this)">Adoptados</button>
     </div>
     <div id="grid" class="grid"></div>
+    <div style="text-align:center;margin-top:2rem">
+      <button id="btnVerMas" class="btn-orange" style="display:none" onclick="verMasMascotas()">Ver más mascotas</button>
+    </div>
   </div>
 </section>
 
@@ -546,6 +552,13 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
           <div>Mascotas en Adopción HN</div>
         </div>
       </a>
+      <a href="https://www.tiktok.com/@mah_hn3" target="_blank" class="social-card sc-tk">
+        <i class="fab fa-tiktok"></i>
+        <div>
+          <div style="font-size:.75rem;opacity:.85">TikTok</div>
+          <div>@mah_hn3</div>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -559,6 +572,9 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
     <h2 class="sec-title">Nuestros rescatados 🐾</h2>
     <p class="sec-sub">Estas mascotas fueron rescatadas de situaciones difíciles. Conoce sus historias.</p>
     <div id="gridRescatados" class="grid"></div>
+    <div style="text-align:center;margin-top:2rem">
+      <button id="btnVerMasRescatados" class="btn-orange" style="display:none" onclick="verMasRescatados()">Ver más rescatados</button>
+    </div>
   </div>
 </section>
 
@@ -603,6 +619,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
       <ul>
         <li><a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
         <li><a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+        <li><a href="https://www.tiktok.com/@mah_hn3" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></li>
         <li><a href="https://wa.me/50494676862" target="_blank"><i class="fab fa-whatsapp"></i> 9467-6862</a></li>
       </ul>
     </div>
@@ -707,10 +724,27 @@ function renderGalleryThumbs(fotos, nombre) {
   </div>`;
 }
 
+const MASCOTAS_POR_PAGINA = 9;
+let mascotasFiltradas = [];
+let mascotasMostradas = MASCOTAS_POR_PAGINA;
+
 function renderGrid(dogs) {
+  mascotasFiltradas = dogs;
+  mascotasMostradas = MASCOTAS_POR_PAGINA;
+  pintarGrid();
+}
+
+function pintarGrid() {
   const grid = document.getElementById('grid');
-  if (!dogs.length) { grid.innerHTML = '<p style="color:var(--g400);font-size:.9rem">No hay mascotas en esta categoría.</p>'; return; }
-  grid.innerHTML = dogs.map(d => {
+  const btnVerMas = document.getElementById('btnVerMas');
+  const dogs = mascotasFiltradas;
+  if (!dogs.length) {
+    grid.innerHTML = '<p style="color:var(--g400);font-size:.9rem">No hay mascotas en esta categoría.</p>';
+    btnVerMas.style.display = 'none';
+    return;
+  }
+  const visibles = dogs.slice(0, mascotasMostradas);
+  grid.innerHTML = visibles.map(d => {
     const tags = (d.tags||'').split(',').map(t=>`<span class="tag">${t.trim()}</span>`).join('');
     const isAdopt = d.status==='adoptado', isPend = d.status==='pendiente';
     const gal = getGallery(d);
@@ -735,12 +769,34 @@ function renderGrid(dogs) {
       </div>
     </div>`;
   }).join('');
+  btnVerMas.style.display = mascotasMostradas < dogs.length ? 'inline-flex' : 'none';
 }
 
+window.verMasMascotas = function() {
+  mascotasMostradas += MASCOTAS_POR_PAGINA;
+  pintarGrid();
+};
+
+let rescatadosFiltrados = [];
+let rescatadosMostrados = MASCOTAS_POR_PAGINA;
+
 function renderRescatados(dogs) {
+  rescatadosFiltrados = dogs;
+  rescatadosMostrados = MASCOTAS_POR_PAGINA;
+  pintarRescatados();
+}
+
+function pintarRescatados() {
   const grid = document.getElementById('gridRescatados');
-  if (!dogs.length) { grid.innerHTML = '<p style="color:var(--g400);font-size:.9rem">Próximamente historias de rescate.</p>'; return; }
-  grid.innerHTML = dogs.map(d => {
+  const btnVerMas = document.getElementById('btnVerMasRescatados');
+  const dogs = rescatadosFiltrados;
+  if (!dogs.length) {
+    grid.innerHTML = '<p style="color:var(--g400);font-size:.9rem">Próximamente historias de rescate.</p>';
+    btnVerMas.style.display = 'none';
+    return;
+  }
+  const visibles = dogs.slice(0, rescatadosMostrados);
+  grid.innerHTML = visibles.map(d => {
     const gal = getGallery(d);
     return `<div class="rescue-card card">
       <div class="card-img" style="cursor:pointer" onclick="openLightboxFromCard(this)" data-fotos="${(gal.all.length?gal.all:[gal.main]).join('||')}">
@@ -756,7 +812,13 @@ function renderRescatados(dogs) {
       </div>
     </div>`;
   }).join('');
+  btnVerMas.style.display = rescatadosMostrados < dogs.length ? 'inline-flex' : 'none';
 }
+
+window.verMasRescatados = function() {
+  rescatadosMostrados += MASCOTAS_POR_PAGINA;
+  pintarRescatados();
+};
 
 function updateStats(dogs) {
   document.getElementById('statAdopt').textContent = dogs.filter(d=>d.status==='adoptado').length;
