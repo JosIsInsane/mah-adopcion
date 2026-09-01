@@ -122,7 +122,11 @@ section{padding:4rem 1.5rem}
 .trencito{text-align:center;margin-bottom:2rem}
 .trencito img{max-width:600px;width:100%;border-radius:16px}
 .cuentas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
-.cuenta-card{background:var(--white);border-radius:12px;padding:1.1rem 1.25rem;border:1px solid var(--g200);display:flex;align-items:center;gap:.9rem}
+.cuenta-card{background:var(--white);border-radius:12px;padding:1.1rem 1.25rem;border:1px solid var(--g200);display:flex;align-items:center;gap:.9rem;text-decoration:none;position:relative;transition:.18s}
+a.cuenta-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 8px 20px rgba(232,120,10,.12)}
+.cuenta-logo{width:52px;height:52px;object-fit:contain;border-radius:8px;flex-shrink:0;background:#fff;border:1px solid var(--g100);padding:4px}
+.cuenta-link-icon{position:absolute;top:.75rem;right:.75rem;color:var(--g400);font-size:.75rem;opacity:0;transition:.18s}
+a.cuenta-card:hover .cuenta-link-icon{opacity:1;color:var(--orange)}
 .cuenta-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;text-align:center;line-height:1.2}
 .cuenta-info .banco{font-weight:600;font-size:.88rem;color:var(--g900);margin-bottom:.1rem}
 .cuenta-info .num{font-size:.82rem;color:var(--orange);font-weight:600;font-family:monospace}
@@ -294,6 +298,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
     <a href="#apadrina" class="nav-links">Apadrinar</a>
     <a href="#donar" class="nav-links">Donar</a>
     <a href="#rescatados" class="nav-links">Rescatados</a>
+    <a href="#voluntarios" class="nav-links">Voluntarios</a>
     <div class="nav-social">
       <a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank" class="nav-ig"><i class="fab fa-instagram"></i></a>
       <a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank" class="nav-fb"><i class="fab fa-facebook-f"></i></a>
@@ -312,6 +317,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
     <a href="#apadrina" onclick="toggleMenu()" style="padding:.75rem 1rem;border-radius:8px;color:var(--g700);font-weight:500;font-size:.95rem;text-decoration:none">💚 Apadrinar</a>
     <a href="#donar" onclick="toggleMenu()" style="padding:.75rem 1rem;border-radius:8px;color:var(--g700);font-weight:500;font-size:.95rem;text-decoration:none">❤️ Donar</a>
     <a href="#rescatados" onclick="toggleMenu()" style="padding:.75rem 1rem;border-radius:8px;color:var(--g700);font-weight:500;font-size:.95rem;text-decoration:none">🏠 Rescatados</a>
+    <a href="#voluntarios" onclick="toggleMenu()" style="padding:.75rem 1rem;border-radius:8px;color:var(--g700);font-weight:500;font-size:.95rem;text-decoration:none">🙋 Voluntarios</a>
     <div style="display:flex;gap:.5rem;padding:.75rem 1rem">
       <a href="https://www.instagram.com/mascotasenadopcionhnd" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#E1306C;color:#fff;display:flex;align-items:center;justify-content:center"><i class="fab fa-instagram"></i></a>
       <a href="https://www.facebook.com/mascotasenadopcionhn/" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#1877F2;color:#fff;display:flex;align-items:center;justify-content:center"><i class="fab fa-facebook-f"></i></a>
@@ -338,7 +344,7 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
       <div class="stats">
         <div class="stat"><span class="n" id="statAdopt">—</span><span class="l">Adoptados</span></div>
         <div class="stat"><span class="n" id="statDisp">—</span><span class="l">Disponibles</span></div>
-        <div class="stat"><span class="n">95</span><span class="l">Padrinos activos</span></div>
+        <div class="stat"><span class="n" id="statPadrinos">—</span><span class="l">Padrinos activos</span></div>
       </div>
     </div>
     <div class="hero-img-wrap">
@@ -407,72 +413,80 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
       <img src="https://i.ibb.co/JjwRG5Dr/Whats-App-Image-2026-08-31-at-6-06-23-PM.jpg" alt="Trencito de donaciones">
     </div>
     <div class="cuentas-grid">
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#003DA5;color:#fff">Atlán<br>tida</div>
+      <a href="https://bancatlan.hn" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/gMS6jQ6F/banco-atlantida.jpg" alt="Banco Atlántida" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">Banco Atlántida</div>
           <div class="num">2020288345</div>
           <div class="nombre">Fundación Mascotas en Adopción Honduras</div>
         </div>
-      </div>
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#CC0000;color:#fff">BAC</div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
+      <a href="https://www.baccredomatic.com/es-hn" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/9Hwt3NLt/bac.png" alt="BAC Credomatic" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">BAC Credomatic</div>
           <div class="num">728 551 301</div>
           <div class="nombre">Celea D. Rodriguez Lopez</div>
         </div>
-      </div>
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#006B3C;color:#fff">Ban<br>país</div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
+      <a href="https://bpenlinea.banpais.hn" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/ksZ6c2Kp/banpais.png" alt="Banpaís" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">Banpaís</div>
           <div class="num">210090097432</div>
           <div class="nombre">Sarah Isabel Hedman Delgallo</div>
         </div>
-      </div>
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#007A4D;color:#fff">Bco<br>Occ</div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
+      <a href="https://www.bancodeoccidente.hn/enlinea" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/21jmD8m4/banco-de-occidente.png" alt="Banco de Occidente" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">Banco de Occidente</div>
           <div class="num">212140880794</div>
           <div class="nombre">Celea D. Rodriguez Lopez</div>
         </div>
-      </div>
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#E8780A;color:#fff">Fico<br>hsa</div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
+      <a href="https://secure.ficohsa.com" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/0jb8D3Zt/ficohsa.png" alt="Ficohsa" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">Ficohsa</div>
           <div class="num">200010487268</div>
           <div class="nombre">Sarah Isabel Hedman Delgallo</div>
         </div>
-      </div>
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#00A9E0;color:#fff">Tigo<br>💙</div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
+      <a href="https://www.tigomoney.com/hn-home" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/9Hmz89w4/tigomoney-png.webp" alt="Tigo Money" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">Tigo Money</div>
           <div class="num">9717-0267</div>
           <div class="nombre">Fredy Rodriguez</div>
         </div>
-      </div>
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#8B2FC9;color:#fff">Ten<br>go</div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
+      <a href="https://bancadigital.bancocuscatlan.com.hn" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/JFsFSvp4/cuscatlan.jpg" alt="Banco Cuscatlán" class="cuenta-logo">
         <div class="cuenta-info">
-          <div class="banco">Tengo</div>
-          <div class="num">3372-4024</div>
-          <div class="nombre">Sarah Isabel Hedman Delgallo</div>
+          <div class="banco">Banco Cuscatlán</div>
+          <div class="num">21-208-009954-7</div>
+          <div class="nombre">Celea D. Rodriguez Lopez</div>
         </div>
-      </div>
-      <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#003087;color:#fff">Pay<br>Pal</div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
+      <a href="https://www.paypal.com" target="_blank" class="cuenta-card">
+        <img src="https://i.ibb.co/S7wymg33/paypal.png" alt="PayPal" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">PayPal</div>
           <div class="num">@mascotasenadopcion</div>
           <div class="nombre">PayPal.me</div>
         </div>
-      </div>
+        <i class="fas fa-arrow-up-right-from-square cuenta-link-icon"></i>
+      </a>
       <div class="cuenta-card">
-        <div class="cuenta-icon" style="background:#6C1CD1;color:#fff">Zel<br>le</div>
+        <img src="https://i.ibb.co/zhj2fB0R/zelle.jpg" alt="Zelle" class="cuenta-logo">
         <div class="cuenta-info">
           <div class="banco">Zelle</div>
           <div class="num">carlosgarciahn1</div>
@@ -502,6 +516,16 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
 </section>
 
 <!-- REDES SOCIALES -->
+<!-- VOLUNTARIADO -->
+<section id="voluntarios">
+  <div class="container text-center">
+    <span class="sec-label">Únete</span>
+    <h2 class="sec-title">Sé voluntario</h2>
+    <p class="sec-sub">¡Amor y respeto incondicional a los animales! Súmate a nuestro equipo y ayuda de la forma que más te apasione: casa cuna, eventos, cuidado directo, transporte, y más.</p>
+    <button class="btn-orange" onclick="openM('voluntario','')" style="margin-top:0">🙋 Quiero ser voluntario</button>
+  </div>
+</section>
+
 <section class="redes-sec">
   <div class="container">
     <span class="sec-label">Síguenos</span>
@@ -634,9 +658,27 @@ footer{background:var(--dark);color:rgba(255,255,255,.5);padding:2.5rem 1.5rem}
   </div>
 </div>
 
+<!-- MODAL VOLUNTARIO -->
+<div class="overlay" id="mVoluntario">
+  <div class="modal">
+    <button class="modal-x" onclick="closeM('mVoluntario')">✕</button>
+    <div id="fVoluntario">
+      <h2>Sé voluntario</h2>
+      <p class="sub">Cuéntanos cómo te gustaría ayudar.</p>
+      <label>Nombre completo</label><input type="text" id="vNombre" placeholder="Tu nombre">
+      <label>Correo electrónico</label><input type="email" id="vCorreo" placeholder="tucorreo@ejemplo.com">
+      <label>Teléfono</label><input type="tel" id="vTel" placeholder="+504 0000-0000">
+      <label>¿Cómo te gustaría ayudar?</label>
+      <textarea id="vInteres" placeholder="Ej: casa cuna, eventos, cuidado directo, transporte..."></textarea>
+      <button class="modal-btn" id="btnVoluntario" onclick="enviarVoluntario()">Enviar</button>
+    </div>
+    <div class="success" id="sVoluntario"><div class="ico">🙋</div><h3>¡Gracias por tu interés!</h3><p>Pronto te contactaremos.</p></div>
+  </div>
+</div>
+
 <script>
 const SHEET_ID = '1CkBU1ks_9GA-xTXRRFNQfayK2dmLjE3QLJlHcppdfi8';
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0jde5RyMekL76kgciYqKkjcwetgnsFzSdsiGHKDTvVijLylyX_d2iXAGkuIdcAJScew/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-YlskWbJ5DMl9V1gS4s2LsHL43ojOF0a7LgN1dreQsMXhlJU9EKcnsW-8AP5O4efBHQ/exec';
 
 const SAMPLE_DOGS = [
   {nombre:"Canela",tipo:"Hembra · 2 años · Mestiza",historia:"Rescatada del mercado de Comayagüela. Cariñosa y muy juguetona.",tags:"Vacunada,Esterilizada,Con niños ✓",status:"disponible",foto:"https://images.unsplash.com/photo-1558788353-f76d92427f16?w=400&q=70"},
@@ -809,9 +851,13 @@ window.enviarAdopcion=function(){
 window.enviarApadrinamiento=function(){
   enviar(SCRIPT_URL,{action:'apadrinamiento',nombre:document.getElementById('pNombre').value,correo:document.getElementById('pCorreo').value,mascota:document.getElementById('pMascota').value,nivel:document.getElementById('pNivel').value},'fApadrinar','sApadrinar','btnApadrinar','Confirmar');
 };
+window.enviarVoluntario=function(){
+  enviar(SCRIPT_URL,{action:'voluntario',nombre:document.getElementById('vNombre').value,correo:document.getElementById('vCorreo').value,telefono:document.getElementById('vTel').value,interes:document.getElementById('vInteres').value},'fVoluntario','sVoluntario','btnVoluntario','Enviar');
+};
 window.openM=function(type,dog=''){
   if(type==='adoptar'){document.getElementById('aMascota').value=dog;document.getElementById('mAdoptar').classList.add('open');}
   else if(type==='apadrinar'){document.getElementById('pMascota').value=dog;document.getElementById('mApadrinar').classList.add('open');}
+  else if(type==='voluntario'){document.getElementById('mVoluntario').classList.add('open');}
 };
 window.closeM=id=>document.getElementById(id).classList.remove('open');
 window.selTier=el=>{document.querySelectorAll('.tier').forEach(t=>t.classList.remove('sel'));el.classList.add('sel');};
@@ -845,6 +891,21 @@ document.addEventListener('DOMContentLoaded', checkMenu);
 
 loadDogs();
 loadRescatados();
+loadPadrinos();
+
+async function loadPadrinos() {
+  try {
+    const url = `${SCRIPT_URL}?sheet=Config&t=${Date.now()}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error('bad response');
+    const config = data.find(d => d.clave === 'padrinos_activos');
+    document.getElementById('statPadrinos').textContent = config ? config.valor : '0';
+  } catch {
+    document.getElementById('statPadrinos').textContent = '0';
+  }
+}
 </script>
 
 <!-- WHATSAPP FLOTANTE -->

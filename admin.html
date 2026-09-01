@@ -138,9 +138,23 @@ tr:hover td{background:var(--g100)}
       <div class="stat-card"><span class="n" id="sAdop">—</span><span class="l">Adoptadas</span></div>
     </div>
     <!-- TABS -->
-    <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
       <button id="tabMascotas" onclick="switchTab('mascotas')" class="btn-sm btn-rust">🐾 Mascotas</button>
       <button id="tabRescatados" onclick="switchTab('rescatados')" class="btn-sm btn-out">❤️ Rescatados</button>
+      <button id="tabPadrinos" onclick="switchTab('padrinos')" class="btn-sm btn-out">💚 Padrinos activos</button>
+    </div>
+
+    <!-- PADRINOS -->
+    <div id="panelPadrinos" class="card-box" style="display:none">
+      <div class="card-box-hdr">
+        <h2>Padrinos activos</h2>
+      </div>
+      <div style="padding:1.5rem">
+        <p style="font-size:.84rem;color:var(--g400);margin-bottom:1rem">Este número se muestra en el sitio público. Actualízalo manualmente cuando confirmes nuevas transferencias de apadrinamiento.</p>
+        <label>Cantidad de padrinos activos</label>
+        <input type="number" id="fPadrinos" min="0" style="max-width:200px">
+        <button class="btn-sm btn-rust" onclick="savePadrinos()" style="margin-top:.75rem">Guardar</button>
+      </div>
     </div>
 
     <!-- MASCOTAS -->
@@ -263,14 +277,42 @@ function switchTab(tab) {
   currentTab = tab;
   document.getElementById('panelMascotas').style.display = tab === 'mascotas' ? 'block' : 'none';
   document.getElementById('panelRescatados').style.display = tab === 'rescatados' ? 'block' : 'none';
+  document.getElementById('panelPadrinos').style.display = tab === 'padrinos' ? 'block' : 'none';
   document.getElementById('tabMascotas').className = tab === 'mascotas' ? 'btn-sm btn-rust' : 'btn-sm btn-out';
   document.getElementById('tabRescatados').className = tab === 'rescatados' ? 'btn-sm btn-rust' : 'btn-sm btn-out';
+  document.getElementById('tabPadrinos').className = tab === 'padrinos' ? 'btn-sm btn-rust' : 'btn-sm btn-out';
+  document.getElementById('btnAgregar').style.display = tab === 'padrinos' ? 'none' : 'inline-block';
   if (tab === 'rescatados') loadRescatados();
+  if (tab === 'padrinos') loadPadrinos();
 }
 
 function handleAgregar() {
   if (currentTab === 'rescatados') openAddRescatado();
   else openAdd();
+}
+
+// =================== PADRINOS ACTIVOS ===================
+async function loadPadrinos() {
+  try {
+    const url = `${SHEET_URL}?sheet=Config&t=${Date.now()}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+    const config = Array.isArray(data) ? data.find(d => d.clave === 'padrinos_activos') : null;
+    document.getElementById('fPadrinos').value = config ? config.valor : 0;
+  } catch {
+    document.getElementById('fPadrinos').value = 0;
+  }
+}
+
+async function savePadrinos() {
+  const valor = document.getElementById('fPadrinos').value || 0;
+  try {
+    await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({action:'setPadrinos', valor})});
+    showToast('Padrinos activos actualizado ✓');
+  } catch {
+    showToast('Error al guardar');
+  }
 }
 
 // =================== RESCATADOS ===================
@@ -400,7 +442,7 @@ function renderFotosPreviewR() {
 
 const SHEET_ID = '1CkBU1ks_9GA-xTXRRFNQfayK2dmLjE3QLJlHcppdfi8';       // ID de tu Google Sheet
 const ADMIN_PASS = 'mah2024';                  // Cambia esta contraseña
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw0jde5RyMekL76kgciYqKkjcwetgnsFzSdsiGHKDTvVijLylyX_d2iXAGkuIdcAJScew/exec'; // URL del Apps Script admin
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw-YlskWbJ5DMl9V1gS4s2LsHL43ojOF0a7LgN1dreQsMXhlJU9EKcnsW-8AP5O4efBHQ/exec'; // URL del Apps Script admin
 // ============================================================
 
 const SAMPLE = [
