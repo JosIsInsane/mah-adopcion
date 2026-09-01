@@ -727,21 +727,11 @@ async function loadDogs() {
     <div style="background:var(--g200);height:280px;border-radius:16px" class="skeleton"></div>
     <div style="background:var(--g200);height:280px;border-radius:16px" class="skeleton"></div>`;
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Mascotas&t=${Date.now()}`;
+    const url = `${SCRIPT_URL}?sheet=Mascotas&t=${Date.now()}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('fetch failed');
-    const csv = await res.text();
-    const lines = csv.trim().split('\n');
-    const headers = lines[0].split(',').map(h=>h.replace(/"/g,'').toLowerCase().trim());
-    allDogs = lines.slice(1).filter(l=>l.trim()).map(line=>{
-      const vals=[]; let cur='',inQ=false;
-      for(let ch of line){ if(ch==='"'){inQ=!inQ;}else if(ch===','&&!inQ){vals.push(cur.trim());cur='';}else{cur+=ch;} }
-      vals.push(cur.trim());
-      const obj={};
-      headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
-      return obj;
-    }).filter(d=>d.nombre);
-    if(!allDogs.length) throw new Error('empty');
+    allDogs = await res.json();
+    if (!Array.isArray(allDogs) || !allDogs.length) throw new Error('empty');
   } catch { allDogs = SAMPLE_DOGS; }
   updateStats(allDogs);
   renderGrid(allDogs);
@@ -782,20 +772,11 @@ document.addEventListener('keydown', e => {
 // CARGAR RESCATADOS
 async function loadRescatados() {
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=Rescatados&t=${Date.now()}`;
+    const url = `${SCRIPT_URL}?sheet=Rescatados&t=${Date.now()}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error('no sheet');
-    const csv = await res.text();
-    const lines = csv.trim().split('\n');
-    const headers = lines[0].split(',').map(h=>h.replace(/"/g,'').toLowerCase().trim());
-    const rescatados = lines.slice(1).filter(l=>l.trim()).map(line=>{
-      const vals=[]; let cur='',inQ=false;
-      for(let ch of line){ if(ch==='"'){inQ=!inQ;}else if(ch===','&&!inQ){vals.push(cur.trim());cur='';}else{cur+=ch;} }
-      vals.push(cur.trim());
-      const obj={};
-      headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
-      return obj;
-    }).filter(d=>d.nombre);
+    const rescatados = await res.json();
+    if (!Array.isArray(rescatados)) throw new Error('bad response');
     renderRescatados(rescatados);
   } catch {
     renderRescatados([]);
