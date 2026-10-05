@@ -46,6 +46,8 @@ h2{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--g4
 .copy{border:none;background:var(--orange);color:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:.78rem;padding:.45rem .95rem;border-radius:100px;cursor:pointer;flex-shrink:0;transition:.18s}
 .copy:hover{background:var(--orange-d)}
 .copy.done{background:var(--ok)}
+.open-app{width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.75rem;padding:.8rem;border:none;border-radius:100px;background:var(--dark);color:#fff;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer;transition:.18s}
+.open-app:hover{background:var(--orange)}
 .open-link{display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:.6rem;padding:.6rem;border:1.5px solid var(--g200);border-radius:100px;color:var(--g700);text-decoration:none;font-size:.82rem;font-weight:600;transition:.18s}
 .open-link:hover{border-color:var(--orange);color:var(--orange)}
 .nota{margin-top:1.5rem;background:var(--orange);color:#fff;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;text-align:center}
@@ -99,18 +101,53 @@ footer{text-align:center;color:var(--g400);font-size:.78rem;margin-top:2rem}
 /* ============ CUENTAS (editá aquí si cambian) ============ */
 const CUENTAS = [
   // grupo, nombre, logo, número/usuario, titular, link para abrir banca
-  { g:"bancos", banco:"Banco Atlántida", logo:"https://i.ibb.co/XrX4b80z/banco-atlantida.jpg", num:"2020288345", titular:"Fundación Mascotas en Adopción Honduras", link:"https://bancatlan.hn" },
-  { g:"bancos", banco:"BAC Credomatic", logo:"https://i.ibb.co/hRCbpLDW/bac.png", num:"728 551 301", titular:"Celea D. Rodriguez Lopez", link:"https://www.baccredomatic.com/es-hn" },
-  { g:"bancos", banco:"Banpaís", logo:"https://i.ibb.co/mCJFxtBg/banpais.png", num:"210090097432", titular:"Sarah Isabel Hedman Delgallo", link:"https://bpenlinea.banpais.hn" },
-  { g:"bancos", banco:"Banco de Occidente", logo:"https://i.ibb.co/21jmD8m4/banco-de-occidente.png", num:"212140880794", titular:"Celea D. Rodriguez Lopez", link:"https://www.bancodeoccidente.hn/enlinea" },
-  { g:"bancos", banco:"Ficohsa", logo:"https://i.ibb.co/svqnvGHj/ficohsa.png", num:"200010487268", titular:"Sarah Isabel Hedman Delgallo", link:"https://secure.ficohsa.com" },
-  { g:"bancos", banco:"Banco Cuscatlán", logo:"https://i.ibb.co/pB5CS7X8/cuscatlan.jpg", num:"21-208-009954-7", titular:"Celea D. Rodriguez Lopez", link:"https://bancadigital.bancocuscatlan.com.hn" },
-  { g:"billeteras", banco:"Tigo Money", logo:"https://i.ibb.co/9Hmz89w4/tigomoney-png.webp", num:"9717-0267", titular:"Fredy Rodriguez", link:"https://www.tigomoney.com/hn-home", label:"Número Tigo Money" },
+  // ios: ID numérico de la App Store (apps.apple.com/app/id######)
+  // android: package de Play Store (lo que va después de "details?id=" en el link de la app). Si lo dejás "", busca la app en Play Store.
+  { g:"bancos", banco:"Banco Atlántida", logo:"https://i.ibb.co/XrX4b80z/banco-atlantida.jpg", num:"2020288345", titular:"Fundación Mascotas en Adopción Honduras", link:"https://bancatlan.hn", ios:"603339165", android:"com.atlantida.bda", app:"Atlántida Móvil" },
+  { g:"bancos", banco:"BAC Credomatic", logo:"https://i.ibb.co/hRCbpLDW/bac.png", num:"728 551 301", titular:"Celea D. Rodriguez Lopez", link:"https://www.baccredomatic.com/es-hn", ios:"465508552", android:"net.bac.sbe.android", app:"Banca Móvil BAC" },
+  { g:"bancos", banco:"Banpaís", logo:"https://i.ibb.co/mCJFxtBg/banpais.png", num:"210090097432", titular:"Sarah Isabel Hedman Delgallo", link:"https://bpenlinea.banpais.hn", ios:"1019342453", android:"hn.com.bi.banpais", app:"Banpaís" },
+  { g:"bancos", banco:"Banco de Occidente", logo:"https://i.ibb.co/21jmD8m4/banco-de-occidente.png", num:"212140880794", titular:"Celea D. Rodriguez Lopez", link:"https://www.bancodeoccidente.hn/enlinea", ios:"777458975", android:"com.todomovil.occidentemovil3", app:"Banco de Occidente Honduras" },
+  { g:"bancos", banco:"Ficohsa", logo:"https://i.ibb.co/svqnvGHj/ficohsa.png", num:"200010487268", titular:"Sarah Isabel Hedman Delgallo", link:"https://secure.ficohsa.com", ios:"474591239", android:"com.ficohsa.activities", app:"Ficohsa Honduras" },
+  { g:"bancos", banco:"Banco Cuscatlán", logo:"https://i.ibb.co/pB5CS7X8/cuscatlan.jpg", num:"21-208-009954-7", titular:"Celea D. Rodriguez Lopez", link:"https://bancadigital.bancocuscatlan.com.hn", ios:"6741618453", android:"com.bancocuscatlanhn.cuscatlanmovilprd", app:"Banco Cuscatlán Honduras" },
+  { g:"billeteras", banco:"Tigo Money", logo:"https://i.ibb.co/9Hmz89w4/tigomoney-png.webp", num:"9717-0267", titular:"Fredy Rodriguez", link:"https://www.tigomoney.com/hn-home", label:"Número Tigo Money", ios:"925903504", android:"com.directoriotigo.hwm", app:"Mi Tigo Honduras" },
   { g:"extranjero", banco:"PayPal", logo:"https://i.ibb.co/twPq6f6x/paypal.png", num:"@mascotasenadopcion", titular:"PayPal.me", link:"https://www.paypal.me/mascotasenadopcion", label:"Usuario", btn:"Donar con PayPal" },
   { g:"extranjero", banco:"Zelle", logo:"https://i.ibb.co/zhj2fB0R/zelle.jpg", num:"carlosgarciahn1@gmail.com", titular:"carlosgarciahn1", link:"", label:"Correo Zelle", tLabel:"Usuario" },
 ];
 const WHATSAPP = "50494676862";
 /* ========================================================= */
+
+const UA = navigator.userAgent;
+const OS = /android/i.test(UA) ? 'android'
+         : (/iPhone|iPad|iPod/i.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) ? 'ios'
+         : 'desktop';
+
+function appUrl(c){
+  const q = encodeURIComponent(c.app);
+  if (OS === 'android') {
+    const store = c.android
+      ? `https://play.google.com/store/apps/details?id=${c.android}`
+      : `https://play.google.com/store/search?q=${q}&c=apps`;
+    // Si la app está instalada la abre; si no, cae a Play Store
+    return c.android
+      ? `intent://#Intent;package=${c.android};S.browser_fallback_url=${encodeURIComponent(store)};end`
+      : store;
+  }
+  if (OS === 'ios') {
+    return c.ios
+      ? `https://apps.apple.com/app/id${c.ios}`       // muestra botón "Abrir" si ya la tiene
+      : `itms-apps://search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?media=software&term=${q}`;
+  }
+  return c.link;
+}
+
+async function copiar(v){
+  try { await navigator.clipboard.writeText(v); }
+  catch { const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+}
+function avisar(msg){
+  const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -133,6 +170,7 @@ CUENTAS.forEach(c => {
         <div><small>${c.tLabel || 'Titular'}</small><span class="val">${esc(c.titular)}</span></div>
         <button class="copy" data-v="${esc(c.titular)}">Copiar</button>
       </div>
+      ${c.app && OS !== 'desktop' ? `<button class="open-app" data-i="${CUENTAS.indexOf(c)}"><i class="fas fa-mobile-screen"></i> Copiar cuenta y abrir app</button>` : ''}
       ${c.link ? `<a class="open-link" href="${c.link}" target="_blank" rel="noopener">${c.btn || 'Abrir banca en línea'} <i class="fas fa-arrow-up-right-from-square"></i></a>` : ''}
     </div>`;
   document.getElementById(c.g).appendChild(d);
@@ -145,13 +183,19 @@ all.forEach(b => b.addEventListener('toggle', () => {
 }));
 
 document.addEventListener('click', async e => {
+  const app = e.target.closest('.open-app');
+  if (app) {
+    const c = CUENTAS[+app.dataset.i];
+    await copiar(c.g === 'bancos' ? c.num.replace(/[^\d]/g, '') : c.num);
+    avisar('Cuenta copiada ✓ Pegala en tu app');
+    setTimeout(() => { window.location.href = appUrl(c); }, 600);
+    return;
+  }
   const btn = e.target.closest('.copy'); if (!btn) return;
-  const v = btn.dataset.v;
-  try { await navigator.clipboard.writeText(v); }
-  catch { const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+  await copiar(btn.dataset.v);
   btn.textContent = '✓ Copiado'; btn.classList.add('done');
-  const toast = document.getElementById('toast'); toast.classList.add('show');
-  setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('done'); toast.classList.remove('show'); }, 1800);
+  avisar('Copiado ✓');
+  setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('done'); }, 1800);
 });
 
 document.getElementById('wa').href =
