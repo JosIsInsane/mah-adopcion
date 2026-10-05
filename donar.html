@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donar | Mascotas en Adopción Honduras</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fdf8f3; --card:#ffffff; --ink:#2d2a26; --muted:#7a7268;
+    --brand:#e8833a; --brand-dark:#c96a24; --line:#eee3d8; --ok:#2e9e5b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:520px;margin:0 auto;padding:24px 16px 48px}
+  header{text-align:center;margin-bottom:24px}
+  header .paw{font-size:44px}
+  h1{font-size:26px;font-weight:800;margin:6px 0}
+  header p{color:var(--muted);font-size:15px}
+  .steps{display:flex;gap:8px;margin:20px 0 24px}
+  .step{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:13px}
+  .step b{display:block;color:var(--brand);font-size:18px}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:24px 0 10px}
+  .bank{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
+  .bank summary{list-style:none;cursor:pointer;padding:16px;display:flex;align-items:center;gap:12px;font-weight:800;font-size:17px}
+  .bank summary::-webkit-details-marker{display:none}
+  .bank summary .dot{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;font-size:15px;flex-shrink:0}
+  .bank summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+  .bank[open] summary .chev{transform:rotate(90deg)}
+  .info{padding:0 16px 16px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+  .row small{display:block;color:var(--muted);font-size:12px}
+  .row span{font-weight:600;word-break:break-all}
+  .copy{border:0;background:var(--brand);color:#fff;font:inherit;font-weight:700;font-size:13px;padding:8px 14px;border-radius:999px;cursor:pointer;flex-shrink:0}
+  .copy:active{background:var(--brand-dark)}
+  .copy.done{background:var(--ok)}
+  .btn{display:block;text-align:center;text-decoration:none;font-weight:800;padding:15px;border-radius:14px;margin-bottom:10px}
+  .btn.main{background:var(--brand);color:#fff}
+  .btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .note{background:#fff4e8;border-radius:12px;padding:14px;font-size:14px;margin-top:20px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(100px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;transition:transform .25s}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="paw">🐾</div>
+    <h1>Ayudanos a seguir rescatando</h1>
+    <p>Cada lempira se va en comida, vacunas y atención veterinaria para nuestros peluditos.</p>
+  </header>
+
+  <div class="steps">
+    <div class="step"><b>1</b>Elegí tu banco</div>
+    <div class="step"><b>2</b>Copiá la cuenta</div>
+    <div class="step"><b>3</b>Transferí desde tu app</div>
+  </div>
+
+  <h2>Transferencia bancaria</h2>
+  <div id="banks"></div>
+
+  <div id="card-section"></div>
+
+  <div class="note">
+    📲 ¿Ya donaste? Mandanos el comprobante por WhatsApp para agradecerte 💛
+  </div>
+  <a class="btn main" id="wa" style="margin-top:12px" target="_blank" rel="noopener">Enviar comprobante por WhatsApp</a>
+
+  <footer>Mascotas en Adopción Honduras · desde 2015<br>
+    <a href="index.html" style="color:var(--brand)">Volver al sitio</a></footer>
+</div>
+<div class="toast" id="toast">Copiado ✓</div>
+
+<script>
+/* ============ EDITÁ SOLO ESTA PARTE ============ */
+const CUENTAS = [
+  { banco:"Banco Atlántida", color:"#c8102e", tipo:"Ahorro", numero:"0000000000", titular:"Fundación Mascotas en Adopción Honduras" },
+  { banco:"BAC Credomatic",  color:"#e4002b", tipo:"Ahorro", numero:"0000000000", titular:"Fundación Mascotas en Adopción Honduras" },
+  { banco:"Ficohsa",         color:"#003da5", tipo:"Ahorro", numero:"0000000000", titular:"Fundación Mascotas en Adopción Honduras" },
+  { banco:"Banco de Occidente", color:"#00843d", tipo:"Ahorro", numero:"0000000000", titular:"Fundación Mascotas en Adopción Honduras" },
+];
+// Link de pago con tarjeta (PayPal, PixelPay, etc.). Dejalo vacío "" para ocultar el botón.
+const LINK_TARJETA = "";
+const WHATSAPP = "50494676862";
+/* =============================================== */
+
+const $banks = document.getElementById('banks');
+CUENTAS.forEach(c => {
+  const ini = c.banco.split(' ').filter(w=>w.length>2).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const d = document.createElement('details');
+  d.className = 'bank';
+  d.innerHTML = `
+    <summary><span class="dot" style="background:${c.color}">${ini}</span>${c.banco}<span class="chev">›</span></summary>
+    <div class="info">
+      ${fila('Número de cuenta', c.numero, c.numero.replace(/\D/g,''))}
+      ${fila('Titular', c.titular, c.titular)}
+      ${fila('Tipo de cuenta', c.tipo, null)}
+    </div>`;
+  $banks.appendChild(d);
+});
+
+function fila(label, value, toCopy){
+  return `<div class="row"><div><small>${label}</small><span>${value}</span></div>
+    ${toCopy ? `<button class="copy" data-v="${toCopy}">Copiar</button>` : ''}</div>`;
+}
+
+// Abrir solo un banco a la vez
+document.querySelectorAll('.bank').forEach(b => b.addEventListener('toggle', () => {
+  if (b.open) document.querySelectorAll('.bank').forEach(o => { if (o !== b) o.open = false; });
+}));
+
+document.addEventListener('click', async e => {
+  const btn = e.target.closest('.copy'); if (!btn) return;
+  const v = btn.dataset.v;
+  try { await navigator.clipboard.writeText(v); }
+  catch { const t=document.createElement('textarea'); t.value=v; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+  btn.textContent = '✓ Copiado'; btn.classList.add('done');
+  const toast = document.getElementById('toast'); toast.classList.add('show');
+  setTimeout(()=>{ btn.textContent='Copiar'; btn.classList.remove('done'); toast.classList.remove('show'); }, 1800);
+});
+
+if (LINK_TARJETA) {
+  document.getElementById('card-section').innerHTML =
+    `<h2>Con tarjeta</h2><a class="btn alt" href="${LINK_TARJETA}" target="_blank" rel="noopener">💳 Donar con tarjeta de crédito/débito</a>`;
+}
+
+document.getElementById('wa').href =
+  `https://wa.me/${WHATSAPP}?text=${encodeURIComponent('¡Hola! Acabo de hacer una donación a M.A.H 🐾 Aquí va mi comprobante:')}`;
+</script>
+</body>
+</html>
